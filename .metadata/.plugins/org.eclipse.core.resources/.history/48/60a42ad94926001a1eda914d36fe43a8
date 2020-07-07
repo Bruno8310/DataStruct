@@ -1,0 +1,15 @@
+package edu.csuft.Bruno.teaplatform.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import edu.csuft.Bruno.teaplatform.entity.Goods;
+
+@Mapper
+public interface GoodsMapper {
+
+	@Select("select * from goods where classify = #{classify}")
+	List<Goods> getGoodsByClassify(String classify);
+}

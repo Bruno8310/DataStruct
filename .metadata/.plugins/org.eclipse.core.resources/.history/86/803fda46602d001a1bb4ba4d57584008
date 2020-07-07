@@ -1,0 +1,96 @@
+package hello.tea.pojo;
+
+public class Goods {
+
+	int goodsId;
+	
+	String goodsName;
+	
+	String others;
+	
+	String size;
+	
+	String suger;
+	
+	String temp;
+	
+	int price;
+	
+	String category;
+	
+	String classify;
+	
+	int quantity;
+	// 图片路径
+	String picture;
+	
+	public int getGoodsId() {
+		return goodsId;
+	}
+	public void setGoodsId(int goodsId) {
+		this.goodsId = goodsId;
+	}
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+	public String getOthers() {
+		return others;
+	}
+	public void setOthers(String others) {
+		this.others = others;
+	}
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
+	}
+	public String getSuger() {
+		return suger;
+	}
+	public void setSuger(String suger) {
+		this.suger = suger;
+	}
+	public String getTemp() {
+		return temp;
+	}
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public String getPicture() {
+		return picture;
+	}
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	@Override
+	public String toString() {
+		return "Goods [goodsId=" + goodsId + ", goodsName=" + goodsName + ", others=" + others + ", size=" + size
+				+ ", suger=" + suger + ", temp=" + temp + ", price=" + price + ", category=" + category + ", quantity="
+				+ quantity + ", picture=" + picture + "]";
+	}
+	
+	
+	
+}

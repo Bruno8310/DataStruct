@@ -1,0 +1,129 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+import java.util.List;
+
+public class Goods {
+
+	 int id;
+	 
+	 String name;
+	 
+	 String others;
+	 
+	 String size;
+	 
+	 String suger;
+	 
+	 String temperature;
+	 
+	 int price;
+	 
+	 String classify;
+	 
+	 String status;
+	 
+	 int number;
+	 
+	 // 一个商品属于一个订单项
+	 OrderItem orderItem;
+
+	public OrderItem getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(OrderItem orderItem) {
+		this.orderItem = orderItem;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOthers() {
+		return others;
+	}
+
+	public void setOthers(String others) {
+		this.others = others;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getSuger() {
+		return suger;
+	}
+
+	public void setSuger(String suger) {
+		this.suger = suger;
+	}
+
+	public String getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getClassify() {
+		return classify;
+	}
+
+	public void setClassify(String classify) {
+		this.classify = classify;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	@Override
+	public String toString() {
+		return "Goods [id=" + id + ", name=" + name + ", others=" + others + ", size=" + size + ", suger=" + suger
+				+ ", temperature=" + temperature + ", price=" + price + ", classify=" + classify + ", status=" + status
+				+ ", number=" + number + ", orderItem=" + orderItem + "]";
+	}
+
+	
+	 
+	 
+	 
+}

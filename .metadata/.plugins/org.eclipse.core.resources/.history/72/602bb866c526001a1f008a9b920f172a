@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <!-- UI -->
+    <div id="app">
+        <!-- 自定义组件 -->
+        <n-nav></n-nav>
+
+        <div class="container mt-3">
+            <n-btn :start="1"></n-btn>
+            <n-btn :start="100"></n-btn>
+            <n-btn :start="10000"></n-btn>
+
+            <n-task></n-task>
+        </div>
+    </div>
+    <!-- JS -->
+    <script>
+
+        Vue.component(
+            'n-task', 
+            {
+                data() {
+                    return {
+                        info: ['起床','吃饭','测试'],
+                    }
+                },
+                methods: {
+                    add: function(t) {
+                        this.info.push(t);  
+                    }
+                },
+                template: `
+                <div class="mt-5">
+                    <!-- 输入 -->
+                    <n-input></n-input>
+        
+                    <!-- 显示 -->
+                    <n-show 
+                        :x='1'
+                        :y='2'
+                        :tasks='info'></n-show>
+                </div>
+                `,
+            }
+        );
+
+        Vue.component(
+            'n-show', 
+            {
+                props: ['x', 'y', 'tasks'],
+                template: `
+                    <div class="list-group mt-3">
+                        <li
+                            v-for="(t,i) in tasks"
+                            class="list-group-item list-group-item-action list-group-item-success">{{i}} | {{t}}</a>
+                    </div>
+                `
+            }
+        );
+
+        Vue.component(
+            'n-input', 
+            {
+                data() {
+                    return {
+                        todo: undefined,
+                    }
+                },
+                methods: {
+                    createTask: function() {
+                        // 调用父组件
+                        this.$parent.add(this.todo);
+                        
+                    }
+                },
+                template: `
+                    <div>
+                    <div class="form-group">
+                      <input
+                        v-model="todo"
+                        type="text"
+                        class="form-control" 
+                        placeholder="今日事今日毕">
+                    </div>
+                    <button
+                        @click="createTask"
+                        type="button"
+                        class="btn btn-primary btn-lg btn-block">创建新任务</button>
+                    </div>
+                `
+            }
+        );
+
+        Vue.component(
+            'n-btn', 
+            {
+                props: ['start'],
+                methods: {
+                    add: function() {
+                       this.n++; 
+                    }
+                },
+                data() {
+                    return {
+                       n: 0 
+                    }
+                },
+                mounted() {
+                    this.n = this.start;
+                },
+                template: `
+                <button
+                    @click="add"
+                    type="button" 
+                    class="btn btn-primary btn-lg btn-block">{{n}}</button>
+                `
+            }
+        );
+
+        // 定义组件
+        Vue.component(
+            'n-nav', 
+            {
+                data() {
+                    return {
+                        title: '实例',
+                        menus: ['科技','体育','娱乐','金融']
+                    }
+                },
+                template: `
+                <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+                    <a class="navbar-brand" href="#">{{title}}</a>
+                    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">主页 <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li v-for="n in menus" class="nav-item">
+                                <a class="nav-link" href="#">{{n}}</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                    <a class="dropdown-item" href="#">Action 1</a>
+                                    <a class="dropdown-item" href="#">Action 2</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </nav>
+
+                `
+            }
+        );
+
+        // Vue 实例
+        new Vue({
+           el: '#app',
+           data: {
+           },
+           methods: {
+           },
+        });
+
+    </script>
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

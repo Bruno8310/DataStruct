@@ -1,0 +1,58 @@
+package edu.csuft.Bruno;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+	@GetMapping("/")
+	public String home(HttpServletResponse response) {
+		// 创建cookie
+		Cookie c1 = new Cookie("login", "false");
+		c1.setMaxAge(60*60*24*365);
+		
+		Cookie c2 = new Cookie("duration", "hahahha");
+		c2.setMaxAge(60*60*24);
+		
+		// 发送数据，写入浏览器
+		response.addCookie(c1);
+		response.addCookie(c2);
+		
+		return "hello";
+	}
+	@GetMapping("/news")
+	public String home1(HttpServletRequest request) {
+		// 可以在二级页面对cookie进行逻辑处理---获得所有的cookie
+		Cookie[] cookies = request.getCookies();
+		// 遍历所有的cookie
+		boolean isLogin = false;
+		
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookies[i].getName().equals("login")) {
+				String value = cookies[i].getValue();
+				if (value.equals("false")) {
+					isLogin = true;
+				}
+			}
+		}
+		
+		if (!isLogin) {
+			return "a";
+		}
+		
+		return "redirect:b";
+	}
+	@GetMapping("/teach")
+	public String home2() {
+		return "b";
+	}
+	@GetMapping("/others")
+	public String home3() {
+		return "c";
+	}
+}

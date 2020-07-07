@@ -1,0 +1,33 @@
+package edu.csuft.Bruno.test;
+
+public class Test2 {
+
+	public static void main(String[] args) {
+		
+		Integer e = 127;
+		
+		Integer f = 127;
+		
+		Integer a = 128;
+		
+		Integer b = new Integer(128);
+		
+		Integer c = Integer.valueOf(128);
+		
+		int d = 128;
+		
+		System.out.println(a==b);
+		
+		System.out.println(a==c);
+		
+		System.out.println(a==d);
+		
+		System.out.println(b==c);
+		
+		System.out.println(b==d);
+		
+		System.out.println(d==c);
+		
+		System.out.println(e==f);
+	}
+}

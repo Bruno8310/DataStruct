@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Spring MVC HTTP 请求参数和路径</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--axios HTTP Client-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<!--状态码
+    1xx     信息
+    2xx     成功
+    3xx     重定向
+    4xx     客户端错误
+    5xx     服务端错误
+-->
+<!--
+    GET: 字符串查询参数在地址栏显示，参数长度受限
+-->
+
+<body>
+    <div id="app" class="container">
+        <div class="row">
+            <div class="col-lg-10 col-sm-12">
+                <!--按钮操作接口中方法-->
+                <div class="row mt-3">
+                    <div class="col">
+                        <button @click='getAll' type="button" class="btn btn-primary">GET /demo</button>
+                    </div>
+                    <div class="col">
+                        <button @click='getById' type="button" class="btn btn-primary">GET /demo/id</button>
+                    </div>
+                    <div class="col">
+                        <button @click='createAll' type="button" class="btn btn-primary">POST /demo</button>
+                    </div>
+                    <div class="col">
+                        <button @click='remove' type="button" class="btn btn-primary">DELETE /demo</button>
+                    </div>
+                    <div class="col">
+                        <button @click='update' type="button" class="btn btn-primary">PUT /demo</button>
+                    </div>
+                </div>
+
+                <div class="jumbotron jumbotron-fluid mt-3">
+                    <div class="container">
+                        <p class="lead">{{info}}</p>
+                    </div>
+                </div>
+
+                <form action="/api/d" method="POST">
+                    <input class="btn btn-block btn-danger mt-3" type="submit" value="POST /api/d" />
+                </form>
+
+                <!--超链接,默认都是发GET请求-->
+                <div class="list-group mt-3">
+                    <a href="user" class="list-group-item list-group-item-action">user</a>
+                    <a href="user/alicy" class="list-group-item list-group-item-action">user/alice</a>
+                    <a href="user/bob" class="list-group-item list-group-item-action">user/bob</a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+            <!--表单提交-->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h4 class="card-title">GET</h4>
+                    <form action="staff">
+                        <div class="form-group">
+                            <label for="">账号</label>
+                            <!--required属性是H5新增的属性，表示此表单必须输入内容
+                                maxlengths属性限制内容的长度
+                                pattern属性通过正则表达式限制表单输入的内容
+                            -->
+                            <input required type="text" class="form-control" name="user" aria-describedby="helpId"
+                                placeholder="请输入账号">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">年龄</label>
+                            <input required maxContentLength: 2 pattern="[1-9][0-9]" type="text" class="form-control"
+                                name="age" aria-describedby="helpId" placeholder="请输入年龄">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">
+                                性别
+                            </label>
+                            <select class="form-control" name="gender">
+                                <option>女</option>
+                                <option>男</option>
+                                <option>保密</option>
+                            </select>
+                        </div>
+                        <!--提交和重置按钮-->
+                        <!-- <button type="submit" class="btn btn-primary btn-block">提交</button> -->
+                        <input type="submit" class="btn btn-primary btn-block" />
+                        <input type="reset" class="btn btn-primary btn-block" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h4 class="card-title">POST</h4>
+                    <!--继续提交到staff，不会发生冲突，一个匹配可以有五种方式-->
+                    <form action="staff" method="POST">
+                        <!--隐藏输入框-->
+                        <input type="hidden" name="id" value="任意">
+                        <div class="form-group">
+                            <label for="">账户</label>
+                            <input type="text" name="user" id="" class="form-control" placeholder="请输入用户名"
+                                aria-describedby="helpId">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">年龄</label>
+                            <input type="text" name="" id="" class="form-control" placeholder="请输入年龄"
+                                aria-describedby="helpId">
+                        </div>
+                        <div class="form-group">
+                            <label for="">性别</label>
+                            <div>
+                                <div class="form-check">
+                                    <label class="form-check-label mr-5">
+                                        <input type="radio" class="form-check-input" name="gender" id="" value="m">
+                                        男
+                                    </label>
+                                    <label class="form-check-label mr-5">
+                                        <input type="radio" class="form-check-input" name="gender" id="" value="f">
+                                        女
+                                    </label>
+                                    <label class="form-check-label mr-5">
+                                        <input type="radio" class="form-check-input" name="gender" id="" value="s">
+                                        保密
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary btn-block" />
+                        <input type="reset" class="btn btn-primary btn-block" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                info: '占位符',
+            },
+            methods: {
+                createAll: function () {
+                    let u = 'alice';
+                    let n = 21;
+                    let g = 'female';
+                    
+                    axios.post(`/api/d`, {
+                            user: u,
+                            age: n,
+                            gender: g,
+                        })
+                        .then(res => {
+                            console.log(res)
+                            this.info = res.data;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+                getAll: function () {
+
+                },
+                getById: function () {
+                    let x = 1;
+                    let y = 2;
+                    axios.get(`/api/d/${id}`, {
+                            params: {
+                                a: x,
+                                b: y
+                            }
+                        })
+                        .then(res => {
+                            console.log(res)
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+                update: function () {
+                    let id = 23;
+                    axios.put(`/api/d/${id}`, {
+                            name: 'king',
+                            age: 23
+                        })
+                        .then(res => {
+                            console.log(res);
+                            this.info = res.data;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+                remove: function () {
+                    let id = 123;
+                    axios.delete(`/api/d`)
+                        .then(res => {
+                            console.log(res)
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            // 接收返回的数据
+                            this.info = res.data;
+                        })
+                }
+            },
+        });
+    </script>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

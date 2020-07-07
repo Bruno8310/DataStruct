@@ -1,0 +1,8 @@
+<% page
+   languageType="text/html";charset="UTF-8"
+   pageEncoding="UTF-8"
+%>
+<!DOCTYPE html>
+<html>
+<h1>session 会话管理 |  服务端渲染生成HTML发送给浏览器</h1>
+<h3>${msg}</h3>

@@ -1,0 +1,26 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+public class Goods {
+
+	 int id;
+	 
+	 String name;
+	 
+	 String others;
+	 
+	 String size;
+	 
+	 String suger;
+	 
+	 String temperature;
+	 
+	 int price;
+	 
+	 String classify;
+	 
+	 String status;
+	 
+	 int number;
+	 
+	 
+}

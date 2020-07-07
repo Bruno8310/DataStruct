@@ -1,0 +1,17 @@
+package com.name.app;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+
+	@Autowired
+	StudentMapper studentMapper;
+	
+	public List<Student> list() {
+		return studentMapper.findAll();
+	}
+}

@@ -1,0 +1,22 @@
+package com.newer.hr.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.newer.hr.mapper.DeptMapper;
+import com.newer.hr.pojo.Dept;
+
+@RestController
+@RequestMapping("/dept")
+public class DeptController {
+
+	// 申明依赖关系,控制器依赖数据操作,自动注入
+	@Autowired
+	DeptMapper deptMapper;
+	
+	public Dept findById(int id) {
+		// deptMapper不为空，代理实现
+		return deptMapper.load(id)
+	}
+}

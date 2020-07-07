@@ -1,0 +1,93 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+public class OrderItem {
+
+	int orderItemId;
+	
+	int goodsNumber;
+	
+	String others;
+	
+	String size;
+	
+	String suger;
+	
+	String temperature;
+	
+	Order order;
+	
+	Goods goods;
+
+	public int getOrderItemId() {
+		return orderItemId;
+	}
+
+	public void setOrderItemId(int orderItemId) {
+		this.orderItemId = orderItemId;
+	}
+
+	public int getGoodsNumber() {
+		return goodsNumber;
+	}
+
+	public void setGoodsNumber(int goodsNumber) {
+		this.goodsNumber = goodsNumber;
+	}
+
+	public String getOthers() {
+		return others;
+	}
+
+	public void setOthers(String others) {
+		this.others = others;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getSuger() {
+		return suger;
+	}
+
+	public void setSuger(String suger) {
+		this.suger = suger;
+	}
+
+	public String getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderItem [orderItemId=" + orderItemId + ", goodsNumber=" + goodsNumber + ", others=" + others
+				+ ", size=" + size + ", suger=" + suger + ", temperature=" + temperature + ", order=" + order
+				+ ", goods=" + goods + "]";
+	}
+	
+	
+}

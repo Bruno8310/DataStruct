@@ -1,0 +1,37 @@
+package edu.csuft.Bruno.test;
+
+import java.util.Scanner;
+public class Test10 {
+    /*
+     * 举例计算11,11=5+6,5*6=30,11=3+4+5,3*4*4=48,11=2+3+3+3,2*3*3*3=54,11=1
+     */
+    static int p(int num) {
+        int maxMul = 1;
+        //i表示分解为i个数的加法，这些数相差不超过1.在所有的分解法中选择乘积最大的。
+        for (int i = 2; i < num; i++) {
+            int rem = num % i;
+            int quo = num / i;
+            int mul = 1;
+            // int j=1;
+            for (int j = 1; j <= i - rem; j++)
+                mul *= quo;
+            for (int j = 1; j <= rem; j++)
+                mul *= (quo + 1);
+            if (mul > maxMul)
+                maxMul = mul;
+            else
+                return maxMul;
+        }
+        return maxMul;
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+//        int num=2;
+//        num=10;
+        Scanner scanner=new Scanner(System.in);
+//        返回：从输入信息扫描的 int
+        int num=scanner.nextInt();
+        System.out.println(p( num));
+         
+    }
+}

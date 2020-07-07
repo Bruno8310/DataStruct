@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;springbootdemo-world&apos;&#x0D;&#x0A;- Original project: &apos;springbootdemo-world&apos;&#x0D;&#x0A;- Original element: &apos;edu.csuft.Bruno.world.WorldApplication.java&apos;" description="Delete element" element1="/src\/main\/java&lt;edu.csuft.Bruno.world{WorldApplication.java" elements="1" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1574746547731" subPackages="false" version="1.0"/>
+</session>

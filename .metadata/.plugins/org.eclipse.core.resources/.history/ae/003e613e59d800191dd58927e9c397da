@@ -1,0 +1,15 @@
+package edu.csuft.Bruno.test;
+
+public class Test2 {
+
+	public static void main(String[] args) {
+		
+		Integer a = 128;
+		
+		Integer b = new Integer(128);
+		
+		Integer c = Integer.valueOf(128);
+		
+		int d = 128;
+	}
+}

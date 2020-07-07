@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>城市分页显示操作</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- <link href="https://fonts.font.im/css?family=Open+Sans" rel="stylesheet" type="text/css">  -->
+    <!--axios HTTP Client-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h6 class="display-3">基于SpringBoot和Vue实现数据分页显示</h6>
+        </div>
+    </div>
+    <div id="city" class="container">
+        <!--用表格展示数据-->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>城市名</th>
+                    <th>国家</th>
+                    <th>地区</th>
+                    <th>人口</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(city, index) in cityList" :key="index">
+                    <td>{{city.id}}</td>
+                    <td>{{city.name}}</td>
+                    <td>{{city.countryCOde}}</td>
+                    <td>{{city.district}}</td>
+                    <td>{{city.population}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <!--分页布局-->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li v-if="current == 1" class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li v-else class="page-item ">
+                    <a class="page-link" href="#" aria-label="Previous" @click="load(current * 10 - 20)">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+                <li class="page-item"><a class="page-link" href="#" @click="load(0)">1</a></li>
+                <li class="page-item"><a class="page-link" href="#" @click="load(10)">2</a></li>
+                <li class="page-item"><a class="page-link" href="#" @click="load(20)">3</a></li>
+
+                <li class="page-item"><a class="page-link" href="#" data-toggle="modal" data-target="#modelId">...</a>
+                </li>
+                <!--点击更多按钮，弹出模态框，输入页面数，加载数据-->
+
+                <!-- Modal -->
+                <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">请输入你所需要查看的页码数</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="form-group">
+                                        <label for=""></label>
+                                        <input v-model="pageId" :pattern="pageRegExp" required type="text"
+                                            class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                    @click="loadById(pageId)">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <li class="page-item"><a class="page-link" href="#" @click="load(page * 10 - 20)">{{page - 2}}</a></li>
+                <li class="page-item"><a class="page-link" href="#" @click="load(page * 10 - 10)">{{page - 1}}</a></li>
+
+                <li v-if="current == page" class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li v-else class="page-item">
+                    <a class="page-link" href="#" aria-label="Next" @click="load(current * 10)">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!--创建一个Vue实例-->
+    <script>
+        // 基于MVVM架构模式的数据双向绑定---基于观察者模式/发布订阅模式 实现的数据双向绑定
+        let vm = new Vue({
+            el: '#city',
+            data: {
+                cityList: [],
+                page: 0,
+                current: 0,
+                pageId: undefined,
+
+            },
+            methods: {
+                load: function (start) {
+                    // 点击的时候发送异步请求
+                    axios.get(`/api/city`, {
+                            params: {
+                                s: start,
+                            }
+                        })
+                        .then(res => {
+                            console.log(res);
+                            // 获取响应的数据
+                            this.cityList = res.data.cityList;
+                            this.page = res.data.pagecount2;
+                            this.current = res.data.currentpage;
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                },
+
+                loadById: function (pageId) {
+                    // 向服务端发送异步请求
+                    axios.get('/api/city', {
+                            params: {
+                                s: pageId * 10 - 10
+                            }
+                        })
+                        .then(res => {
+                            console.log(res);
+                            // 获取响应的数据
+                            this.cityList = res.data.cityList;
+                            this.page = res.data.pagecount2;
+                            this.current = res.data.currentpage;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                }
+            },
+            // 计算属性，用作初始化(运行一次)
+            mounted() {
+                // 一个请求
+                axios.get(`/api/city`, {
+                        params: {
+                            s: 0
+                        }
+                    })
+                    .then(res => {
+                        console.log(res);
+                        // 获取响应成功的数据
+                        this.cityList = res.data.cityList;
+                        this.page = res.data.pagecount2;
+                        this.current = res.data.currentpage;
+                    });
+            },
+
+            // 计算属性
+            computed: {
+                pageRegExp: function () {
+                    let end = this.page;
+                    return `[1-${end}]`;
+                }
+            },
+        });
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

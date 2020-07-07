@@ -1,0 +1,63 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<div th:if="${message}">
+		<h2 th:text="${message}"/>
+	</div>
+
+	<div>
+		<form method="POST" enctype="multipart/form-data" action="/">
+			<table>
+				<tr><td>goodsName</td>
+					<td><input type="text" name="goodsName" /></td>
+
+				</tr>
+				<tr><td>others</td>
+					<td><input type="text" name="others" /></td>
+
+				</tr>
+				<tr><td>size</td>
+					<td><input type="text" name="size" /></td>
+				</tr>
+				<tr><td>suger</td>
+					<td><input type="text" name="suger" /></td>
+				</tr>
+				<tr><td>temp</td>
+					<td><input type="text" name="temp" /></td>
+				</tr>
+				<tr><td>price</td>
+					<td><input type="text" name="price" /></td>
+				</tr>
+
+				<tr><td>category</td>
+					<td><input type="text" name="category" /></td>
+				</tr>
+				<tr><td>classify</td>
+					<td><input type="text" name="category" /></td>
+				</tr>
+				
+				<tr><td>quantity</td>
+					<td><input type="text" name="quantity" /></td>
+				</tr>
+				<tr>
+					<td>图片选择</td>
+					<td><input type="file" name="file" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Upload" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<div>
+		<ul>
+			<li th:each="file : ${files}">
+				<a th:href="${file}" th:text="${file}" />
+			</li>
+		</ul>
+	</div>
+
+</body>
+</html>

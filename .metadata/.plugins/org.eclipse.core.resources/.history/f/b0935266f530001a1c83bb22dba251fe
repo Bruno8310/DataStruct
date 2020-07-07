@@ -1,0 +1,17 @@
+package edu.csuft.Bruno;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+	/**
+	 * URL映射到index页面
+	 * @return
+	 */
+	@GetMapping("/")
+	public String home() {
+		return "index";
+	}
+}

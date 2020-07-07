@@ -1,0 +1,100 @@
+#修改内嵌web容器端口
+#server:
+  #address: localhost
+  #port: 1234
+  
+#配置日志及记录文件
+logging:
+#加载自定义配置文件的路径
+  #config: classpath:log4j2config/log4j2-config.xml
+#自定义日志文件保存的路径，文件由springboot产生 spring.log
+  #path:  E://springboothello
+  level: 
+    edu.csuft.Bruno: debug
+    #com.my.datasource.factory: debug
+    com.zaxxer.hikari: debug
+    #org.springframework: debug
+  file: springbootdemo.log 
+  file.max-size: 100MB
+  
+  
+spring: 
+#配置spring数据源
+  datasource:
+  #描述数据源类型 springboot默认使用HikariDataSource 所以不用type属性描述
+    #type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    password: 123456
+    username: root
+    url: jdbc:mysql://localhost:3306/mybatisdemo
+    # hikariCP 配置
+    hikari:
+      #driver-class-name: com.mysql.jdbc.Driver
+      #jdbc-url: jdbc:mysql://localhost:3306/test?
+      #password: 123456
+      #username: root
+      
+      #hikariCP 初始化配置
+      auto-commit: true
+      allow-pool-suspension: true
+      connection-init-sql: select 1
+      connection-timeout: 30000
+      idle-timeout: 10000
+      initialization-fail-timeout: 30000
+      max-lifetime: 180000
+      maximum-pool-size: 200
+      minimum-idle: 10
+      pool-name: springboothello-pool 
+      
+      #hikariCP 性能优化配置
+      data-source-properties:
+       cachePrepStmts: true
+       prepStmtCacheSize: 250
+       prepStmtCacheSqlLimit: 2048
+       useServerPrepStmts: true
+       useLocalSessionState: true
+       useLocalTransactionState: true
+       cacheResultSetMetadata: true 
+
+#相关热部署的配置
+  devtools:
+    restart:
+    #开启热部署
+      enabled: true
+      #指定springboot热部署资源加载路径
+      additional-paths:
+      - src/main/java
+      - src/main/resources
+      #排除热部署路径中其他资源(指定热部署路径中那些资源不需要热部署)
+      #additional-exclude: src/main/resources/springbootconfig/* 
+      #从整个工程目录中排除热部署资源
+      #exclude: 
+      
+#配置mybatis配置  独立的mybatis配置
+mybatis: 
+#session执行的模式采用simple
+ executor-type: simple
+ 
+ #config类的配置
+ configuration:
+  local-cache-scope: session
+  map-underscore-to-camel-case: true
+  aggressive-lazy-loading: false
+  cache-enabled: true
+  default-fetch-size: 2000
+  lazy-loading-enabled: true
+  default-result-set-type: forward-only
+  lazy-load-trigger-methods:
+    - toString
+    - hashCode
+ lazy-initialization: false
+ #mapper-locations:
+  #- classpath:edu/csuft/Bruno/UserMapper.xml
+  #- classpath:com/my/mybatis/vo/StudentVO.xml
+  #- classpath:com/my/mybatis/vo/TeacherVO.xml
+
+
+  
+  
+  
+    

@@ -1,0 +1,31 @@
+package com.name.app;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/")
+public class StudentController {
+
+	@Autowired
+	StudentMapper studentMapper;
+	
+	@GetMapping("/student")
+	public List<Student> list() {
+		return studentMapper.findAll();
+	}
+	
+	public String create(Student s) {
+		studentMapper.save(s);
+		return "insert successfully";
+	}
+	
+	public String remove(int id) {
+		studentMapper.remove(id);
+		return "remove successfully";
+	}
+}

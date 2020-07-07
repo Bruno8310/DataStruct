@@ -1,0 +1,9 @@
+<h1>hello jsp</h1>
+<ul>
+	<li><a href="">新闻</a></li>
+	<li><a href="">科技</a></li>
+	<li><a href="">娱乐</a></li>
+	<li></li>
+
+
+</ul>

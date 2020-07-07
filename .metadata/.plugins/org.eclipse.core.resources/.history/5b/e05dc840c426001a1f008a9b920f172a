@@ -1,0 +1,36 @@
+package edu.csuft.Bruno.teaplatform.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.ibatis.io.ResolverUtil.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import edu.csuft.Bruno.teaplatform.entity.Goods;
+import edu.csuft.Bruno.teaplatform.service.GoodsService;
+
+@RestController
+public class HomeController {
+	
+	@Autowired
+	GoodsService goodsService;
+	
+	@GetMapping("/")
+	public String Test() {
+		return "index.html";
+	}
+	
+	@ResponseBody
+	@GetMapping("/{classify}")
+	public List<Goods> getGoodsByClassify(@PathVariable String classify) {	
+		ArrayList<Goods> list = new ArrayList<>();
+		list = (ArrayList<Goods>) goodsService.getGoodsByClassify(classify);
+		return list;
+	}
+}

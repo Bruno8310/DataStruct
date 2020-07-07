@@ -1,0 +1,25 @@
+package edu.csuft.Bruno;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+	@GetMapping("/")
+	public String home() {
+		return "hello";
+	}
+	@GetMapping("/news")
+	public String home1() {
+		return "a";
+	}
+	@GetMapping("/teach")
+	public String home2() {
+		return "b";
+	}
+	@GetMapping("/others")
+	public String home3() {
+		return "c";
+	}
+}

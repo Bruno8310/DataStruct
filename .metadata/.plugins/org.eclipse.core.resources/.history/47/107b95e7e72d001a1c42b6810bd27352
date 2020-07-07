@@ -1,0 +1,9 @@
+server.port = 9002
+
+spring.datasource.url=jdbc:mysql://47.97.186.157/mydb?serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=James123456
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+#logging.level.org.springframework=debug
+

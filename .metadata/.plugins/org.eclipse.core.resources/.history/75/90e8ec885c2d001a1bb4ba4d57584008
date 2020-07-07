@@ -1,0 +1,12 @@
+package hello.storage;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface GoodsMapper {
+
+	
+	@Insert("insert into goods(goodsName,others,size,suger,temp,price,classify,quantity,picture) values(#{goodsName},#{others},#{size},#{suger},#{temp},#{price},#{classifyclassify},#{quantity},#{picture}) ")
+	void insertgoods(Goods goods);
+}

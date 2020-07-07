@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--vue-->
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="row">
+            <list-one></list-one>
+        </div>
+        {{message}}
+        
+        <hr>
+
+        
+    </div>
+
+    
+    <script>
+
+        let bus = new Vue();
+
+        Vue.component('list-one', {
+            data: function () {
+                return {
+                    a: '',
+                }
+            },
+            template: `
+                <a @click="passMsg" name="" id="" class="btn btn-primary" href="#" role="button">按钮一{{a}}</a>
+            `,
+            methods: {
+                passMsg: function () {
+                    bus.$emit('pass-on', '哈哈哈哈哈哈');
+                    this.a = 'hahahha'
+                }
+            },
+        });
+        // Vue.component('list-two', {
+        //     data: function () {
+        //         return {
+        //             message: '',
+        //         }
+        //     },
+        //     template: `
+        //     <div class="form-group">
+        //      <label for=""></label>
+        //      <textarea class="form-control" name="" id="" rows="3">{{message}}</textarea>
+        //     </div>
+        //     `,
+        //     mounted: function () {
+        //         bus.$on('pass-on', function (msg) {
+        //             this.message = msg;
+        //         })
+        //     },
+        // });
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                message: '',
+            },
+            mounted: function() {
+                bus.$on('pass-on', function(msg){
+                    this.message = msg;
+                })
+            },
+        });
+    </script>
+
+chuncha: [{
+    id: 1,
+    name: '四季春茶',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/四季春茶.png',
+},
+{
+    id: 2,
+    name: '冻顶乌龙茶',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/冻顶乌龙茶.png',
+},
+{
+    id: 3,
+    name: '茉莉绿茶',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/茉莉绿茶.png',
+}
+]
+
+
+naicha: [{
+    name: '珍珠奶茶',
+    size: '中杯',
+    status: '店长推荐',
+    price: 100,
+    imageurl: 'image/珍珠奶茶.png',
+},
+{
+    name: '波霸奶茶',
+    size: '中杯',
+    status: '店长推荐',
+    price: 100,
+    imageurl: 'image/波霸奶茶.png',
+},
+{
+    name: '可可芭蕾',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/可可芭蕾.png',
+}
+]
+
+natie: [{
+    name: '红茶拿铁',
+    size: '中杯',
+    status: '下架',
+    price: 100,
+    imageurl: 'image/红茶拿铁.png',
+},
+{
+    name: '红茶玛奇朵',
+    size: '中杯',
+    status: '下架',
+    price: 100,
+    imageurl: 'image/红茶玛奇朵.png',
+},
+{
+    name: '波霸红',
+    size: '中杯',
+    status: '下架',
+    price: 100,
+    imageurl: 'image/波霸红.png',
+}
+]
+
+guozhi: [{
+    name: '柠檬汁',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/柠檬汁.png',
+},
+{
+    name: '冰缘',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/冰缘.png',
+},
+{
+    name: '茉莉绿茶',
+    size: '中杯',
+    status: '热卖',
+    price: 100,
+    imageurl: 'image/茉莉绿茶.png',
+}
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

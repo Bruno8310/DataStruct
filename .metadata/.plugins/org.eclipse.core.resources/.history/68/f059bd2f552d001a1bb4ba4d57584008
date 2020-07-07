@@ -1,0 +1,11 @@
+package hello.storage;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public interface GoodsMapper {
+
+	
+	@Insert("insert into")
+	void insertGoods(Goods goods);
+}

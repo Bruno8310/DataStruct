@@ -1,0 +1,30 @@
+package edu.csuft.Bruno;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Controller
+public class HomeController {
+
+	/**
+	 * URL映射到index页面
+	 * @return
+	 */
+	@GetMapping("/")
+	public String home(Model model) {
+		
+		// 加载数据
+		List<Goods> goods = Db.allGoods();
+		
+		// 模型中的数据，可以直接在视图中访问
+		model.addAttribute("list", goods);
+		model.addAttribute("msg", "home");
+		
+		
+		return "index";
+	}
+}

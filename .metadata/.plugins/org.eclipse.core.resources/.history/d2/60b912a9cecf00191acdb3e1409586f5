@@ -1,0 +1,23 @@
+package edu.csuft.Bruno.collection;
+
+public class PersonDao implements Dao<Person> {
+
+	@Override
+	public void save(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object load(int pk) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

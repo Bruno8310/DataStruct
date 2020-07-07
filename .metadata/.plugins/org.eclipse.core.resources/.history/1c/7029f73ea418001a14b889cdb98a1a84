@@ -1,0 +1,47 @@
+package com.newer.hr.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Many;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+
+import com.newer.hr.pojo.Dept;
+import com.newer.hr.pojo.Staff;
+
+@Mapper
+public interface DeptMapper {
+
+	@Select("select * from where id = #{pk}")
+	@Results({
+		@Result(column = "loc", property = "city"),
+		@Result(column = "id", property = "id"),
+		@Result(column = "id", property = "staffList", 
+				javaType = List.class,
+				many = @Many(select = "findStaffByDeptId")				
+				)
+	})
+	Dept load(int pk);	
+	
+	
+	@Select("select * from staff where dept_id = #{id}")
+	@Results({
+		@Result(column = "phone", property = "tel")
+	})
+	List<Staff> findStaffByDeptId(int id);
+	
+	/**
+	 * 向数据库中插入一条数据默认操作不会产生返回值，加入Options注解会返回主键值
+	 * 
+	 * 插入一条数据， 自动生成主键
+	 * @param dept
+	 * @return
+	 */
+	@Insert("insert into dept() values()")
+	@Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
+	int save(Dept dept);
+}

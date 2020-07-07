@@ -1,0 +1,15 @@
+package com.name.app;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public class StudentMapper {
+
+	public void save(Student s);
+	
+	public List<Student> findAll();
+	
+	public void remove(int id);
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!-- axios -->
+
+    <!-- Vue Router(路由器) -->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+</head>
+
+<body>
+
+    <nav aria-label="breadcrumb">
+
+        <!-- 嵌套目录结构 -->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#">Library</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+    </nav>
+
+    <div class="container">
+        <div id="app">
+            <h3>Vue 路由 - 推荐使用 Bootstrap breadcrumb</h3>
+            <p>
+                <!-- 使用 router-link 组件来导航. -->
+                <!-- 通过传入 `to` 属性指定链接. -->
+                <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+                <router-link to="/foo">学院</router-link>
+                <router-link to="/bar">专业</router-link>
+                <router-link to="/user">学生</router-link>
+                <router-link to="/abc">文字链接（abc）</router-link>
+                <a href="#spring">spring</a>
+            </p>
+
+            <!-- 路由出口 -->
+            <!-- 路由匹配到的组件将渲染在这里 -->
+            <router-view></router-view>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+        // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
+
+        // 1. 定义 (路由) 组件。
+        // 可以从其他文件 import 进来
+        const Abc = Vue.component('Abc', {
+            data() {
+                return {
+
+                }
+            },
+            template: `
+                <ul class="list-group">
+                    <li class="list-group-item active">Active item</li>
+                    <li class="list-group-item">Item</li>
+                    <li class="list-group-item disabled">Disabled item</li>
+                </ul>
+            `
+        });
+
+
+        const Foo = {
+            template: `<counter></counter>`
+        }
+
+        const Bar = {
+            template: `
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h1 class="display-3">专业信息</h1>
+                    </div>
+                </div>
+            `
+        }
+        const UserPosts = {
+            template: `
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h1 class="display-3">学员信息</h1>
+                    </div>
+                </div>
+            `
+        }
+        const UserProfile = {
+            template: `
+                <div class="card-deck">
+                    <div class="card">
+                        <img class="card-img-top" src="holder.js/100x180/" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">Title</h4>
+                            <p class="card-text">Text</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="holder.js/100x180/" alt="">
+                        <div class="card-body">
+                            <h4 class="card-title">Title</h4>
+                            <p class="card-text">Text</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+
+        Vue.component('counter', {
+            data: function () {
+                return {
+                    count: 0,
+                    info: [{
+                            id: 1,
+                            title: '林学院',
+                            person: '林院长'
+                        },
+                        {
+                            id: 2,
+                            title: '计信息院',
+                            person: '王院长'
+                        },
+                        {
+                            id: 3,
+                            title: '理学院',
+                            person: '理院长'
+                        }
+                    ]
+                }
+            },
+            template: `
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>学院</th>
+                        <th>院长</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in info">
+                        <td scope="row">{{item.id}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.person}}</td>
+                    </tr>
+                </tbody>
+                </table>
+            `
+        })
+
+        const User = {
+            template: `
+                <div class="user">
+                <h3>学生首页</h3>
+                <router-link to="/user/posts">课程</router-link>
+                <router-link to="/user/profile">信息</router-link>
+                <router-view></router-view>
+                </div>
+            `
+        }
+
+        // 2. 定义路由
+        // 每个路由应该映射一个组件。 其中"component" 可以是
+        // 通过 Vue.extend() 创建的组件构造器，
+        // 或者，只是一个组件配置对象。
+        // 我们晚点再讨论嵌套路由。
+        const routes = [{
+                path: '/foo',
+                component: Foo
+            },
+            {
+                path: '/bar',
+                component: Bar
+            },
+            {
+                path: '/abc',
+                component: Abc
+            },
+            {
+                path: '/user',
+                component: User,
+                children: [{
+                        // 当 /user/:id/profile 匹配成功，
+                        // UserProfile 会被渲染在 User 的 <router-view> 中
+                        path: 'profile',
+                        component: UserProfile
+                    },
+                    {
+                        // 当 /user/:id/posts 匹配成功
+                        // UserPosts 会被渲染在 User 的 <router-view> 中
+                        path: 'posts',
+                        component: UserPosts
+                    }
+                ]
+            }
+        ]
+
+        // 3. 创建 router 实例，然后传 `routes` 配置
+        // 你还可以传别的配置参数, 不过先这么简单着吧。
+        const router = new VueRouter({
+            routes // (缩写) 相当于 routes: routes
+        })
+
+        // 4. 创建和挂载根实例。
+        // 记得要通过 router 配置参数注入路由，
+        // 从而让整个应用都有路由功能
+        const app = new Vue({
+            router
+        }).$mount('#app')
+
+        // new Vue({
+        //     el: '#app'
+        // })
+
+        // 现在，应用已经启动了！
+    </script>
+</body>
+
+</html>

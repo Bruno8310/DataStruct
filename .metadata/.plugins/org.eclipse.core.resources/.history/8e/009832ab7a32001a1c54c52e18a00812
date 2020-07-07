@@ -1,0 +1,34 @@
+package edu.csuft.Bruno;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Controller
+public class HomeController {
+
+	/**
+	 * URL映射到index页面
+	 * @return
+	 */
+	@GetMapping("/")
+	public String home(Model model) {
+		
+		// 加载数据
+		List<Goods> goods = Db.allGoods();
+		
+		// 作用域
+		// jsp中有四中作用域
+		// 请求转发作用域
+		// 模型中的数据，可以直接在视图中访问
+		model.addAttribute("list", goods);
+		model.addAttribute("msg", "home");
+		
+		// 请求转发,地址栏只会是最初的,不会发生变化,数据也会传入index页面
+		// jsp页面是在服务端进行渲染,用户浏览器只做显示，不进行处理，所有的开销都在服务端，逐渐摒弃
+		return "index";
+	}
+}

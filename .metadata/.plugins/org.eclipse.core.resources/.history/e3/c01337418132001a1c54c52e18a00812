@@ -1,0 +1,15 @@
+package edu.csuft.Bruno;
+/**
+ * 
+ * 购物车
+ * 
+ * @author Bruno
+ *
+ */
+
+import java.util.HashMap;
+
+public class ShoppingCart {
+
+	HashMap<Integer, Integer> info = new HashMap<>();
+}

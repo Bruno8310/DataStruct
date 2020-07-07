@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 设置log4j2的自身log级别为warn -->
+<!--  -->
+
+<!-- 
+status设置为DEBUG，这样用户可以在Eclipse的console看到Log4j2启动和加载配置文件时的打印信息,如果不需要就设置OFF
+status可设置为OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
+monitorInterval是用来设置配置文件的动态加载时间的，单位是秒。
+monitorInterval="30"表示每30秒配置文件会动态加载一次。
+在程序运行过程中，如果修改配置文件，程序会随之改变。 -->
+<configuration status="INFO" monitorInterval="30">
+
+	<!-- 设置日志文件目录变量名及变量值 
+		该properties配置如果没有配置，就直接将该值写入到相应的位置
+	-->
+	 <properties>  
+        <property name="LOG_HOME">C:/Spring STS-4.3.1.RELEASE/workspaces</property>  
+        <property name="FILE_NAME">springbootdemo</property>  
+    </properties>  
+	
+    <appenders>
+    
+    	<!-- 
+    		Console:在命令行打印
+			RollingFile:打印到文件中
+			Rolling的意思是当满足一定条件后，就重命名原日志文件用于备份，并从新生成一个新的日志文件。
+			例如需求是每天生成一个日志文件，但是如果一天内的日志文件体积已经超过1G，就从新生成，两个条件满足一个即可。
+			这在log4j 1.x原生功能中无法实现，在log4j2中就很简单了。
+    	 -->
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout charset="UTF-8" pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}][%p] -%l -%m%n"/>
+        </console>
+ 
+        <RollingFile name="RollingFileInfo" fileName="${LOG_HOME}/${FILE_NAME}/${FILE_NAME}_info.log"
+                     filePattern="${LOG_HOME}/${FILE_NAME}/$${date:yyyy-MM}/${FILE_NAME}_info-%d{yyyy-MM-dd}-%i.log">
+            <!--
+			ConsoleAppender、
+			FileAppender（以及他的堂哥RandomAccessFileAppender）、
+			RollingFileAppender（以及他的堂哥RollingRandomAccessFileAppender），
+			其中RollingFileAppender是三个appender中的大哥大，因为他一个人的文档篇幅就是其它两个appender文档篇幅总和的6~7倍左右。。。
+			RollingFile/RollingRandomAccessFile的属性：
+			fileName  指定当前日志文件的位置和文件名称
+			filePattern  指定当发生Rolling时，文件的转移和重命名规则
+			SizeBasedTriggeringPolicy  指定当文件体积大于size指定的值时，本配置设置为100M的文件存储空间，如果超过100M，
+			                                                      触发Rolling，按照filePattern属性设置值进行操作。会自动将以前的内容，创建类似 2014-09（年-月）的目录，
+			                                                      然后按 "xxx-年-月-日-序号"命名，打成压缩包
+			DefaultRolloverStrategy  指定打成压缩包最多保存的个数
+　　		TimeBasedTriggeringPolicy  这个配置需要和filePattern结合使用，注意filePattern中配置的文件重命名规则是${log_path}/zcrTest%d{yyyy-MM-dd}.log，
+			最小的时间粒度是dd，即分钟，TimeBasedTriggeringPolicy指定的size是1，结合起来就是每一天生成一个新文件。
+			如果改成%d{yyyy-MM-dd HH}，最小粒度为小时，则每一个小时生成一个文件。
+			
+			控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）
+            onMatch="ACCEPT" 表示匹配该级别及以上
+			onMatch="DENY" 表示不匹配该级别及以上
+			onMatch="NEUTRAL" 表示该级别及以上的，由下一个filter处理，如果当前是最后一个，则表示匹配该级别及以上
+			onMismatch="ACCEPT" 表示匹配该级别以下
+			onMismatch="NEUTRAL" 表示该级别及以下的，由下一个filter处理，如果当前是最后一个，则不匹配该级别以下的
+			onMismatch="DENY" 表示不匹配该级别以下的
+			onMatch实际上指的就是匹配下限值
+			onMismatch实际上指的就是匹配上限值
+			下面这段配置过滤的信息级别就是：大于等于 DEBUG级别 小于等于WARN级别
+            -->        
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <!-- 每天生成一个日志文件 -->  
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>  
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- 最大保存文件数 -->  
+            <DefaultRolloverStrategy max="20" />  
+        </RollingFile>
+ 
+        <RollingFile name="RollingFileWarn" fileName="${LOG_HOME}/${FILE_NAME}/${FILE_NAME}_warn.log"
+                     filePattern="${LOG_HOME}/${FILE_NAME}/$${date:yyyy-MM}/${FILE_NAME}_warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="WARN"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <!-- 每天生成一个日志文件 -->  
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>  
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+ 
+        <RollingFile name="RollingFileError" fileName="${LOG_HOME}/${FILE_NAME}/${FILE_NAME}_error.log"
+                     filePattern="${LOG_HOME}/${FILE_NAME}/$${date:yyyy-MM}/${FILE_NAME}_error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+        
+       <!-- 类似私人订制的log 信息追踪 --> 
+      <!--   <RollingFile name="RollingFileTrace" fileName="${LOG_HOME}/${FILE_NAME}/${FILE_NAME}_info.log"
+                     filePattern="${LOG_HOME}/${FILE_NAME}/$${date:yyyy-MM}/${FILE_NAME}_info-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="TRACE"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>  -->
+ 
+    </appenders> 
+ 	
+ 	 <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+     <loggers>
+	   
+	   <logger name="org.springframework" level="DEBUG"></logger>
+       <logger name="org.apache.mybatis" level="DEBUG"/>
+        <logger name="org.mybatis" level="DEBUG"/>
+       <!-- <logger name="org.quartz" level="DEBUG"></logger> -->
+        
+        <!-- 指定某个类的log信息按指定的level级别写入到指定ref属性配置的文件中  
+        additivity属性为一个开关配置 true在控制台打印信息和文件中记录信息，否则false不执行控制台打印信息，只在文件中记录信息
+        name属性值为指定的某个包名或类名，如指定com.test.log.MyLoggerTest类名name="com.test.log.MyLoggerTest"
+        	如指定com.test.log包中所有类name="com.test.log“,谨记不要写成name="com.test.log.*“  -->
+        <!--  <Logger name="com.test.log" level="TRACE" additivity="false">  
+            <AppenderRef ref="RollingFileTrace" />  
+        </Logger>   -->
+        
+        <!-- level属性值可设为all、trace、debug、info、warn、error、fatal -->  
+        <root level="all">
+      
+            <appender-ref ref="Console"/>
+            <!-- <appender-ref ref="RollingFileInfo"/> 
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/> -->
+        </root>
+    </loggers>
+ 
+</configuration>

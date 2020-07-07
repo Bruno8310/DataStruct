@@ -1,0 +1,182 @@
+package com.titan.core;
+
+import java.awt.Point;
+import java.util.Random;
+
+import com.titan.bean.Grid;
+
+/**
+ * 游戏核心类
+ * @author Administrator
+ * 雷区面板布局、布雷、踩雷、布雷数、8个方向、输出雷区
+ */
+public class Core {
+
+	//定义一个格子的二维数组来保存雷区
+	public Grid[][] grid=new Grid[9][9];
+	
+	//定义一个雷数
+	int count=10;
+	
+	//定义一个随机数工具
+	Random rand=new Random();
+	
+	//定义一个方法完成雷区的绘制--向格子数组中添加内容
+	public void addGrid() {
+		//通过嵌套循环完成二维数组中每个位置对象的添加
+		for(int i=0;i<grid.length;i++) {
+			for(int j=0;j<grid[i].length;j++) {
+				grid[i][j]=new Grid();
+				//设置当前格子对象的内容
+				grid[i][j].setContent(' ');
+				//设置当前格子对象的状态
+				grid[i][j].setState(true);
+				//设置当前格子对象的坐标
+				grid[i][j].setPoint(new Point(i,j));
+			}
+		}
+	}
+	
+	//定义一个输出雷区的方法
+	public void show() {
+		for(int i=0;i<grid.length;i++) {
+			for(int j=0;j<grid[i].length;j++) {
+				//根据格子对象的状态来确定显示的内容
+				if(!grid[i][j].isState()) {
+					System.out.print(grid[i][j].getContent()+" ");
+				}else {
+					System.out.print("■ ");
+				}
+			}
+			System.out.println();
+		}
+	}
+	
+	
+	/**
+	 * 定义一个布雷的方法
+	 * 要求： 必须确保整个雷区中有10个雷，如果在布雷的时候当前位置上
+	 * 		  有雷就重写布雷。
+	 */
+	public void mine() {
+		//定义一个计数器来统计当前所布的雷数
+		int i=0;
+		//当所布雷数小于总雷数的就继续循环布雷
+		while(i<count){
+			//随机获取布雷的坐标
+			int x=rand.nextInt(9);
+			int y=rand.nextInt(9);
+			//判断当前随机位置的格子内容是否是雷，如果是雷就跳过当
+			//前循环，进入下次循环继续布雷
+			if(grid[x][y].getContent()!='*') {
+				//添加当前随机位置的格子对象内容为*
+				grid[x][y].setContent('*');
+				i++;
+			}
+		}
+	}
+	
+	//定义一个方法来获得当前中心点位置的8个方向格子坐标
+	public Point[] getPoint(int x,int y) {
+		//定义一个坐标数组存放8个方向
+		Point[] p=new Point[8];
+		//分别赋值8个方向坐标
+		//左上
+		p[0]=new Point(x-1,y-1);
+		//上
+		p[1]=new Point(x,y-1);
+		//右上
+		p[2]=new Point(x+1,y-1);
+		//右
+		p[3]=new Point(x+1,y);
+		//右下
+		p[4]=new Point(x+1,y+1);
+		//下
+		p[5]=new Point(x,y+1);
+		//左下
+		p[6]=new Point(x-1,y+1);
+		//左
+		p[7]=new Point(x-1,y);
+		
+		return p;
+	}
+	
+	//定义一个添加雷数的方法
+	public void setNumber() {
+		//通过循环来获得每个格子对象
+		for(int i=0;i<grid.length;i++) {
+			for(int j=0;j<grid[i].length;j++) {
+				//定义一个统计8个方向雷数的计数器
+				int sum=0;
+
+				//判断当前格子内容是否是雷，如果是雷就进入下个格子对象内容获取
+				if(grid[i][j].getContent()!='*') {
+					
+					//获得当前格子对象的8个方向格子对象
+					Point[] point=this.getPoint(i, j);
+					//通过循环来获得8个方向的格子对象，来确定内容中是否有雷
+					for(int k=0;k<point.length;k++) {
+						//获得方向对象
+						Point po=point[k];
+						//先判断坐标是否有效
+						if(po.x>=0 && po.x<grid.length && po.y>=0 && po.y<grid.length) {
+							//通过方向对象来获得对应方向的格子对象来统计雷数
+							if(grid[po.x][po.y].getContent()=='*') {
+								sum++;
+							}
+						}
+					}
+				}
+				
+				//判断雷数的计数器内容是否改变，如果大于0表示有雷存在
+				if(sum!=0) {
+					grid[i][j].setContent((char)(sum+48));
+				}
+				
+			}
+		}
+	}
+	
+	//定义一个踩雷的方法,通用用户提供的坐标来实现当前格子位置的内容获取
+	public boolean stamp(int x,int y) {
+		//设置当前位置的格子对象的状态为开启
+		grid[x][y].setState(false);
+		
+		//判断当前位置的格子对象是否为雷
+		if(grid[x][y].getContent()!='*') {
+			//判断当前位置是否为空格
+			if(grid[x][y].getContent()==' ') {
+				//获得当前选择的格子的8个坐标方向的格子对象
+				//判断周围是否为空格
+				Point[] point=this.getPoint(x, y);
+				//循环8个方向的格子对象
+				for(int i=0;i<point.length;i++) {
+					//获得每个方向对象
+					Point po=point[i];
+					//判断方向是否越界
+					if(po.x>=0 && po.x<grid.length && po.y>=0 && po.y<grid.length) {
+						/*
+						 * 判断当前方向的格子对象内容是否为空格
+						 * 如果是空格就实现辐射操作(递归调用)
+						 */
+						if(grid[po.x][po.y].getContent()==' ' && grid[po.x][po.y].isState()) {
+							this.stamp(po.x, po.y);
+						}else {
+							//设置格子内容为数字的状态为显示
+							grid[po.x][po.y].setState(false);
+						}
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+}

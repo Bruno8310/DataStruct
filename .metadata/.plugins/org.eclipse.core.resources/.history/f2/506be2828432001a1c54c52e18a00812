@@ -1,0 +1,55 @@
+package edu.csuft.Bruno;
+/**
+ * 
+ * 购物车
+ * 
+ * @author Bruno
+ *
+ */
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpSession;
+
+public class ShoppingCart {
+	// 购物车中核心数据
+	HashMap<Integer, Integer> info = new HashMap<>();
+
+	public ShoppingCart() {
+	}
+
+	// 默认的方法，添加的数量是1
+	public void add(int pid) {
+		// info.put(pid, 1);
+		if (info.containsKey(pid)) {
+			// 购物车中已存在
+			info.put(pid, info.get(pid) + 1);
+		} else {
+			// 购物车中不存在
+			info.put(pid, 1);
+		}
+	}
+
+	// 添加的数量是n
+	public void add(int pid, int n) {
+		info.put(pid, n);
+	}
+
+	/**
+	 * 商品项的数量
+	 * 
+	 * @return
+	 */
+	public int size() {
+		// 获得value构成的集合
+		Collection<Integer> values = info.values();
+		int sum = 0;
+		for (Integer n : values) {
+			sum += n;
+		}
+		return sum;
+	}
+
+}

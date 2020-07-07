@@ -1,0 +1,8 @@
+package hello.storage;
+
+public interface GoodsMapper {
+
+	
+	@Insert("insert into")
+	void insertGoods(Goods goods);
+}

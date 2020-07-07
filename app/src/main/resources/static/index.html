@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!--vue-->
+  <script src="js/vue.js"></script>
+  <!--axios-->
+  <script src="js/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 页头 -->
+    <div class="jumbotron jumbotron-fluid p-3">
+      <div class="container">
+        <h1 class="display-3">学籍管理平台</h1>
+        <p class="lead"><span class="badge badge-pill badge-danger">牛耳教育</span></p>
+      </div>
+    </div>
+
+    <!-- 页面主体 -->
+    <div class="container-fluid">
+      <div class="row">
+
+        <!-- 左侧 -->
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">添加新学员</h4>
+              <!-- 创建新学员的表单 -->
+              <form action="/student" method="POST">
+                <!-- 姓名字段 -->
+                <div class="form-group form-control-lg">
+                  <label for="">姓名</label>
+                  <input type="text" class="form-control" name="name" placeholder="请输入学员姓名" required>
+                </div>
+                <!-- 手机号字段 -->
+                <div class="form-group form-control-lg">
+                  <label for="">手机号</label>
+                  <input type="text" class="form-control" name="phone" placeholder="请输入手机号" maxlength="11"
+                    pattern="1\d{10}" required>
+                </div>
+                <!-- 提交按钮 -->
+                <button type="submit" class="btn btn-success btn-block">创建</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧 -->
+        <div class="col-lg-9">
+          <!-- 显示数据的表格 -->
+          <table class="table table-bordered table-hover mb-5">
+            <!-- 表头 -->
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">编号</th>
+                <th scope="col">姓名</th>
+                <th scope="col">手机号</th>
+                <th scope="col" class="w-25">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 数据行开始 -->
+              <tr v-for="(item, index) in stuList" :key="index">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.phone}}</td>
+                <td>
+                  <button @click="remove(item.id)" type="button" name="" id=""
+                    class="btn btn-danger btn-block">删除</button>
+                </td>
+              </tr>
+
+
+              <!-- 数据行结束 -->
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="jumbotron jumbotron-fluid mb-0 fixed-bottom p-3">
+      <p class="text-center">copyright@2019 牛耳教育</p>
+    </div>
+
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          stuList: [],
+
+        }
+      },
+      methods: {
+        remove: function (n) {
+          // 指定索引值删除学生信息
+          let id = n;
+          axios.delete(`/student/${id}`)
+            .then(res => {
+              // 查询学生数据
+              axios.get('/student')
+                .then(res => {
+                  // 获得所有学生数据
+                  this.stuList = res.data;
+                  console.log(res)
+                })
+                .catch(err => {
+                  console.error(err);
+                })
+              console.log(res)
+            })
+            .catch(err => {
+              console.error(err);
+            })
+        }
+      },
+      computed: {
+
+      },
+      mounted() {
+        // 查询学生数据
+        axios.get('/student')
+          .then(res => {
+            // 获得所有学生数据
+            this.stuList = res.data;
+            console.log(res)
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      },
+    });
+  </script>
+
+
+
+
+</body>
+
+</html>

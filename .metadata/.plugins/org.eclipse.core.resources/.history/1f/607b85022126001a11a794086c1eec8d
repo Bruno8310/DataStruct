@@ -1,0 +1,20 @@
+package edu.csuft.Bruno.teaplatform.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import edu.csuft.Bruno.teaplatform.entity.Goods;
+import edu.csuft.Bruno.teaplatform.mapper.GoodsMapper;
+
+@Service
+public class GoodsService {
+
+	@Autowired
+	GoodsMapper goodsMapper;
+	
+	public List<Goods> getGoodsByClassify(String classify) {
+		
+	}
+}

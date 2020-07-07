@@ -1,0 +1,64 @@
+package com.name.app;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * HTTP的请求处理器---HTTP Request Handler
+ * 
+ * @author Bruno
+ *
+ */
+@RestController
+public class StudentController {
+
+	@Autowired
+	StudentMapper studentMapper;
+
+	/**
+	 * 
+	 * @return
+	 */
+	@GetMapping("/student")
+	public List<Student> list() {
+		return studentMapper.findAll();
+	}
+
+	/**
+	 * @RequestBody: 数据以JSON的格式发过来，封装成一个实体类
+	 * @param s
+	 * @return
+	 */
+	@PostMapping("/student")
+	public ResponseEntity<HttpStatus> create(Student s) {
+		studentMapper.save(s);
+//		return "insert successfully";
+		// 也可以返回一个响应的状态码----return ResponseEntity<HttpStatus>
+		return new ResponseEntity<> (HttpStatus.OK);
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("/student/{id}")
+	public String remove(@PathVariable int id) {
+		studentMapper.remove(id);
+		return "remove successfully";
+	}
+}

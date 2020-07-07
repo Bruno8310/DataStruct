@@ -1,0 +1,5 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+public class Goods {
+
+}

@@ -1,0 +1,26 @@
+package edu.csuft.Bruno;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+/**
+ * 购物车控制器
+ * @author Bruno
+ *
+ */
+@Controller
+@RequestMapping("/cart")
+public class CartController {
+
+	/**
+	 * GET /cart
+	 * 
+	 * 
+	 * @return 视图名
+	 */
+	@GetMapping
+	public String home() {
+		
+		return "cart";
+	}
+}

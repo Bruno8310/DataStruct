@@ -1,0 +1,19 @@
+package com.name.app;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+@Mapper
+public interface StudentMapper {
+
+	@Insert("insert into students(name, phone) values(#{name},#{phone})")
+	void save(Student s);
+
+	@Select("select * from students")
+	List<Student> findAll();
+
+	void remove(int id);
+}

@@ -1,0 +1,79 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+
+	int orderId;
+	
+	int totalPrice;
+	
+	Date orderTime;
+	
+	boolean orderStatus;
+	
+	String phone;
+	
+	// 一个订单包含多个订单项
+	List<OrderItem> orderItems;
+		
+
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public int getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public Date getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(Date orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public boolean isOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(boolean orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", totalPrice=" + totalPrice + ", orderTime=" + orderTime
+				+ ", orderStatus=" + orderStatus + ", phone=" + phone + ", orderItems=" + orderItems + "]";
+	}
+
+	
+	
+	
+}

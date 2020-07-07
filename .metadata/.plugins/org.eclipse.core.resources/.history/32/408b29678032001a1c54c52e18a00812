@@ -1,0 +1,82 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+<!doctype html>
+<html lang="en">
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+
+<body>
+	<h1>session 会话管理 | 服务端渲染生成HTML发送给浏览器</h1>
+	<h3>msg:{msg}</h3>
+	<h3>id:${id}</h3>
+	<a class="btn btn-primary" href="cart" role="button">购物车</a>
+	<hr>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>商品编号</th>
+				<th>商品名</th>
+				<th>价格</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${list}" var="p">
+				<tr>
+					<td scope="row">${p.id}</td>
+					<td>${p.title}</td>
+					<td>${p.price}</td>
+					<td>
+						<!--添加到购物车-->
+						<!--表单的同步提交-->
+						<!--XHR脚本异步提交-->
+						<form action="cart" method="post">
+							<!--隐藏的输入框/隐藏字段-->
+							<input type="hidden" name="pid" value="${p.id}">
+							<input type="hidden" name="ptitle" value="${p.title}">
+							<input type="hidden" name="price" value="${p.price}">
+							<button type="submit" class="btn btn-primary">加入购物车</button>
+
+						</form>
+					</td>
+				</tr>
+				</tr>
+			</c:forEach>
+
+		</tbody>
+	</table>
+
+
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous">
+		
+	</script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous">
+		
+	</script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous">
+		
+	</script>
+</body>
+
+</html>

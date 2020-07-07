@@ -1,0 +1,1563 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>奶茶线上点单平台</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!--vue-->
+    <script src="js/vue.js"></script>
+    <!--axios-->
+    <script src="js/axios.min.js"></script>
+    <!--vue-router-->
+    <script src="js/vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app" class="container" style="background-color: rgb(241, 248, 248);">
+        <!--导航栏-->
+        <div class="mt-3">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#"><img src="image/奶茶 (6).png"
+                        class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                        alt=""></a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link text-info font-weight-bolder" href="#">奶茶点单平台 <span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item ml-4">
+                            <a class="nav-link font-weight-bolder" href="#">首页</a>
+                        </li>
+                        <li class="nav-item dropdown ml-4">
+                            <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="dropdownId"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">产品介绍</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownId">
+                                <a class="dropdown-item font-weight-bolder" href="#">产品简介</a>
+                                <a class="dropdown-item font-weight-bolder" href="#">产品促销</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <a name="" id="" class="btn btn-light ml-4" href="#" role="button" data-toggle="modal"
+                        data-target="#carinformation">
+                        <img src="image/购物车.png" class=" mr-3 img-fluid" alt="">
+                        <!-- 使用 router-link 组件来导航. -->
+                        <!-- 通过传入 `to` 属性指定链接. -->
+                        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+                        <router-link to="/shoppingcar">购物车</router-link>
+
+                    </a>
+
+                    <!--顾客信息---模态框-->
+                    <a name="" id="customerphone" class="btn btn-light ml-2 text-danger" href="#" role="button"
+                        data-toggle="modal" data-target="#phone"><img src="image/人物-头像.png"
+                            class="img-fluid mr-3 ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                            alt="">{{phone}}</a>
+                    <!-- Modal2 -->
+                    <div class="modal fade" id="phone" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div v-if="flag" class="alert alert-danger" role="alert">
+                                        麻烦输入正确的手机号码，可以嘛！
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">请输入手机号码</label>
+                                        <input required :pattern="regExp" type="telephone" v-model="phone"
+                                            class="form-control" value="" name="phone" id="phone"
+                                            aria-describedby="helpId" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                    <button id="tijiao" type="button" class="btn btn-primary"
+                                        @click="getPhone">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!--轮播图-->
+        <div class="row mt-3">
+            <div id="carouselId" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselId" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselId" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+
+                    <div class="carousel-item active">
+                        <img src="image/轮播3.png" class="d-block w-100" alt="Third slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="image/轮播4.png" class="d-block w-100" alt="Four slide">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselId" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselId" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+
+        <!--奶茶分类与详情页面-->
+        <div class="mt-3">
+            <!--导航栏-->
+            <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+                <li class="nav-item ml-3">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                        aria-controls="home" aria-selected="true"><img src="image/奶茶 (1).png"
+                            class=" mr-2 img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                            alt="">
+                        <router-link to="/chuncha">醇茶</router-link>
+
+
+                    </a>
+                </li>
+                <li class="nav-item ml-3">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                        aria-controls="profile" aria-selected="false"><img src="image/奶茶 (3).png"
+                            class=" mr-2 img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                            alt="">
+                        <router-link to="/naicha">奶茶</router-link>
+
+                    </a>
+                </li>
+                <li class="nav-item ml-3">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                        aria-controls="contact" aria-selected="false"><img src="image/奶茶 (5).png"
+                            class=" mr-2 img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                            alt="">
+                        <router-link to="/natie">拿铁</router-link>
+
+                    </a>
+                </li>
+                <li class="nav-item ml-3">
+                    <a class="nav-link" id="content-tab" data-toggle="tab" href="#contact" role="tab"
+                        aria-controls="contact" aria-selected="false"><img src="image/奶茶 (4).png"
+                            class=" mr-2 img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                            alt="">
+                        <router-link to="/guozhi">果汁</router-link>
+
+                    </a>
+                </li>
+            </ul>
+
+            <!--商品详情-->
+            <div class="tab-content mt-3" id="myTabContent">
+                <!--醇茶-->
+                <div class="tab-pane fade show active border" id="chuncha" role="tabpanel" aria-labelledby="home-tab">
+                    <router-view></router-view>
+                </div>
+                <!--奶茶-->
+                <div class="tab-pane fade" id="naicha" role="tabpanel" aria-labelledby="profile-tab">
+                    <!-- <router-view></router-view> -->
+                </div>
+                <!--拿铁-->
+                <div class="tab-pane fade" id="natie" role="tabpanel" aria-labelledby="contact-tab">
+                    <!-- <router-view></router-view> -->
+                </div>
+                <!--果汁-->
+                <div class="tab-pane fade" id="guozhi" role="tabpanel" aria-labelledby="content-tab">
+                    <!-- <router-view></router-view> -->
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <!--footer-->
+        <footer style="height:50px;">
+            <p class="border border-info mt-5" style=" background-color: rgb(191, 181, 238); text-align: center;">
+                Copyright &copy;2019.12.18 by 第二小组 鄢成 包剑 易志 龚利</p>
+        </footer>
+
+        <!--测试-->
+        <div class="row" v-for="(item, index) in items" :key="index">
+
+        </div>
+    </div>
+
+    <script>
+        // 定义购物车组件
+        const car = Vue.component('car', {
+            data: function () {
+                return {
+                    goods: '',
+
+                }
+            },
+            template: `
+                    <!--购物车详细---模态框-->
+                    <!-- Modal1 -->
+                    <div class="modal fade" id="carinformation" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">购物车商品</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!--存放每个订单项--表格-->
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>编号</th>
+                                                <th>商品名</th>
+                                                <th>加料</th>
+                                                <th>规格</th>
+                                                <th>糖量</th>
+                                                <th>温度</th>
+                                                <th>数量</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td scope="row"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                    <div class="row">
+                                                        <a name="" id=""
+                                                            class="btn btn-success btn-sm ml-1 update float-left"
+                                                            href="#" role="button">+</a>
+                                                            {{}}
+                                                        <a name="" id="" class="btn btn-danger btn-sm ml-2 " href="#"
+                                                            role="button">-</a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a name="" id="" class="btn btn-danger btn-sm " href="#"
+                                                    role="button">删除</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                    <h4>总计:<span class="text-warning">￥100</span></h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消订单</button>
+                                    <button @click="demo" type="button" class="btn btn-primary" data-dismiss="modal">付款</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            `,
+            methods: {
+                demo: function () {
+                    // 在实例初始化时，监听来自bus实例的事件
+                    bus.$on('goods-info', function (goods) {
+                        this.goods = goods;
+                    });
+                    console.log(this.goods);
+
+                }
+            },
+            computed: {
+
+            },
+
+        });
+
+        // 奶茶分类的导航栏---定义路由组件
+        // 分类1----醇茶
+        const navbarlist1 = Vue.component('navbarlist1', {
+            data: function () {
+                return {
+                    flag: false,
+                    goodsName: undefined,
+                    n: undefined,
+                    goods: {
+                        name: undefined,
+                        number: 1,
+                        size: undefined,
+                        other: new Array(),
+                        suger: undefined,
+                        temperature: undefined,
+                        totalPrice1: undefined,
+                    },
+                    // 初始化数据从服务端响应
+                    priceList: [{
+                            name: '四季春茶',
+                            price: 10
+                        },
+                        {
+                            name: '冻顶乌龙茶',
+                            price: 15,
+                        },
+                        {
+                            name: '茉莉绿茶',
+                            price: 12,
+                        },
+                        {
+                            name: '大杯',
+                            price: 3
+                        },
+                        {
+                            name: '超大杯',
+                            price: 5
+                        },
+                        {
+                            name: '燕姿',
+                            price: 5
+                        },
+                        {
+                            name: '咖啡冻',
+                            price: 5
+                        },
+                        {
+                            name: '奶霜',
+                            price: 5
+                        },
+                        {
+                            name: '珍珠',
+                            price: 3
+                        },
+                        {
+                            name: '椰果',
+                            price: 3
+                        }
+                    ],
+                    chuncha: [{
+                            id: 1,
+                            name: '四季春茶',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/四季春茶.png',
+                        },
+                        {
+                            id: 2,
+                            name: '冻顶乌龙茶',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/冻顶乌龙茶.png',
+                        },
+                        {
+                            id: 3,
+                            name: '茉莉绿茶',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/茉莉绿茶.png',
+                        }
+                    ]
+                }
+            },
+            template: `
+            <div class="row">
+            <div class="col-4 border-danger" v-for="(item, index) in chuncha" :key="index">
+            <div class="row">
+                <div class="col-6">
+                    <a href="#">
+                        <img :src=item.imageurl class="img-fluid " alt="">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <span class="badge badge-light mt-3">名称:</span><span
+                        class="badge badge-info">{{item.name}}</span><br>
+                    <span class="badge badge-light">规格:</span><span class="badge badge-info">{{item.size}}</span><br>
+                    <span class="badge badge-light">商品状态:</span><span
+                        class="badge badge-info">{{item.status}}</span><br>
+                    <span class="badge badge-light">价格:</span><span class="badge badge-info">￥{{item.price}}</span>
+
+                    <button @click=selectModal(index) type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
+                        data-target="#goodsinformation">选规格购买</button>
+
+                    <div id="goodsinformation" class="modal fade" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">(中杯){{goodsName}}</h5>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div v-if="flag" class="alert alert-danger" role="alert">
+                                        请选择糖量或者温度，好嘛！！！
+                                     </div>
+                                    <form action="post">
+                                        <!--规格--单选框-->
+                                        <h5>
+                                            <span class="badge badge-primary">规格</span>
+                                        </h5>
+                                        <div class="form-check">
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" checked name="size" id="" value="中杯">
+                                                中杯
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="大杯">
+                                                大杯
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="超大杯">
+                                                超大杯
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">加料</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="燕姿"> 燕姿
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="咖啡冻"> 咖啡冻
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="奶霜"> 奶霜
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="珍珠"> 珍珠
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="椰果"> 椰果
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">糖量</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger"  name="suger" id=""
+                                                    value="正常糖"> 正常糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="三分糖"> 三分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="五分糖"> 五分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="七分糖"> 七分糖
+                                            </label><br>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="不额外加糖"> 不额外加糖
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5>
+                                            <span class="badge badge-primary">温度</span>
+                                        </h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="去冰">
+                                                去冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="少冰">
+                                                少冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="常温">
+                                                常温
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="加热">
+                                                加热
+                                            </label>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <h5 class="text-danger"><span class="badge badge-primary">已选规格：</span>{{goodsName}}-{{goods.size}}-{{goods.other}}-{{goods.suger}}-{{goods.temperature}}</h5>
+                                    <hr>
+                                    <h4>总计:<span class="text-warning">￥{{calculPrice}}</span></h4>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button id="addtocar" @click="addToCar" type="button" class="btn btn-primary" >加到购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            `,
+            methods: {
+                // 模态框的索引对应
+                selectModal: function (n) {
+                    this.n = n;
+                    let obj = this.chuncha[this.n].name;
+                    this.goodsName = obj;
+                    this.goods.name = this.goodsName;
+                },
+
+                // 实现商品加到购物车
+                addToCar: function () {
+                    let button = document.querySelector("#addtocar");
+                    if (this.goods.suger === undefined || this.goods.temperature === undefined) {
+                        this.flag = true;
+                    } else {
+                        this.flag = false;
+                        console.log(this.goods);
+                        // 
+                        bus.$emit("goods-info", '来自');
+                        button.setAttribute('data-dismiss', 'modal');
+                    }
+                }
+            },
+            computed: {
+                // 计算商品价格
+                calculPrice: {
+                    get: function () {
+                        let totalPrice = 0;
+                        switch (this.goodsName) {
+                            case '四季春茶':
+                                totalPrice += this.priceList[0].price;
+                                break;
+                            case '冻顶乌龙茶':
+                                totalPrice += this.priceList[1].price;
+                                break;
+                            case '茉莉绿茶':
+                                totalPrice += this.priceList[2].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        switch (this.goods.size) {
+                            case '大杯':
+                                totalPrice += this.priceList[3].price;
+                                break;
+                            case '超大杯':
+                                totalPrice += this.priceList[4].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        for (let i = 0; i < this.goods.other.length; i++) {
+                            switch (this.goods.other[i]) {
+                                case '燕姿':
+                                    totalPrice += this.priceList[5].price;
+                                    break;
+                                case '咖啡冻':
+                                    totalPrice += this.priceList[6].price;
+                                    break;
+                                case '奶霜':
+                                    totalPrice += this.priceList[7].price;
+                                    break;
+                                case '珍珠':
+                                    totalPrice += this.priceList[8].price;
+                                    break;
+                                case '椰果':
+                                    totalPrice += this.priceList[9].price;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        this.goods.totalPrice1 = totalPrice;
+                        return totalPrice;
+                    }
+                }
+            },
+        });
+
+        // 分类2----奶茶 
+        const navbarlist2 = Vue.component('navbarlist2', {
+            data: function () {
+                return {
+                    flag: false,
+                    goodsName: undefined,
+                    n: undefined,
+                    goods: {
+                        name: undefined,
+                        number: 1,
+                        size: undefined,
+                        other: new Array(),
+                        suger: undefined,
+                        temperature: undefined,
+                        totalPrice1: undefined,
+                    },
+
+                    priceList: [{
+                            name: '珍珠奶茶',
+                            price: 10
+                        },
+                        {
+                            name: '波霸奶茶',
+                            price: 15,
+                        },
+                        {
+                            name: '可可芭蕾',
+                            price: 12,
+                        },
+                        {
+                            name: '大杯',
+                            price: 3
+                        },
+                        {
+                            name: '超大杯',
+                            price: 5
+                        },
+                        {
+                            name: '燕姿',
+                            price: 5
+                        },
+                        {
+                            name: '咖啡冻',
+                            price: 5
+                        },
+                        {
+                            name: '奶霜',
+                            price: 5
+                        },
+                        {
+                            name: '珍珠',
+                            price: 3
+                        },
+                        {
+                            name: '椰果',
+                            price: 3
+                        }
+                    ],
+                    naicha: [{
+                            name: '珍珠奶茶',
+                            size: '中杯',
+                            status: '店长推荐',
+                            price: 100,
+                            imageurl: 'image/珍珠奶茶.png',
+                        },
+                        {
+                            name: '波霸奶茶',
+                            size: '中杯',
+                            status: '店长推荐',
+                            price: 100,
+                            imageurl: 'image/波霸奶茶.png',
+                        },
+                        {
+                            name: '可可芭蕾',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/可可芭蕾.png',
+                        }
+                    ]
+                }
+            },
+            template: `
+            <div class="row">
+            <div class="col-4 border-danger" v-for="(item, index) in naicha" :key="index">
+            <div class="row">
+                <div class="col-6">
+                    <a href="#">
+                        <img :src=item.imageurl class="img-fluid " alt="">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <span class="badge badge-light mt-3">名称:</span><span
+                        class="badge badge-info">{{item.name}}</span><br>
+                    <span class="badge badge-light">规格:</span><span class="badge badge-info">{{item.size}}</span><br>
+                    <span class="badge badge-light">商品状态:</span><span
+                        class="badge badge-info">{{item.status}}</span><br>
+                    <span class="badge badge-light">价格:</span><span class="badge badge-info">￥{{item.price}}</span>
+
+                    <button @click=selectModal(index) type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
+                        data-target="#goodsinformation">选规格购买</button>
+
+                    <div id="goodsinformation" class="modal fade" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">(中杯){{goodsName}}</h5>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div v-if="flag" class="alert alert-danger" role="alert">
+                                        请选择糖量或者温度，好嘛！！！
+                                     </div>
+                                    <form action="post">
+                                        <!--规格--单选框-->
+                                        <h5>
+                                            <span class="badge badge-primary">规格</span>
+                                        </h5>
+                                        <div class="form-check">
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" checked name="size" id="" value="中杯">
+                                                中杯
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="大杯">
+                                                大杯
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="超大杯">
+                                                超大杯
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">加料</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="燕姿"> 燕姿
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="咖啡冻"> 咖啡冻
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="奶霜"> 奶霜
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="珍珠"> 珍珠
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="椰果"> 椰果
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">糖量</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger"  name="suger" id=""
+                                                    value="正常糖"> 正常糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="三分糖"> 三分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="五分糖"> 五分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="七分糖"> 七分糖
+                                            </label><br>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="不额外加糖"> 不额外加糖
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5>
+                                            <span class="badge badge-primary">温度</span>
+                                        </h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="去冰">
+                                                去冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="少冰">
+                                                少冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="常温">
+                                                常温
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="加热">
+                                                加热
+                                            </label>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <h5 class="text-danger"><span class="badge badge-primary">已选规格：</span>{{goodsName}}-{{goods.size}}-{{goods.other}}-{{goods.suger}}-{{goods.temperature}}</h5>
+                                    <hr>
+                                    <h4>总计:<span class="text-warning">￥{{calculPrice}}</span></h4>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button id="addtocar" @click="addToCar" type="button" class="btn btn-primary" >加到购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            `,
+            methods: {
+                // 模态框的索引对应
+                selectModal: function (n) {
+                    this.n = n;
+                    let obj = this.naicha[this.n].name;
+                    this.goodsName = obj;
+                    this.goods.name = this.goodsName;
+                },
+
+                // 实现商品加到购物车
+                addToCar: function () {
+                    let button = document.querySelector("#addtocar");
+                    if (this.goods.suger === undefined || this.goods.temperature === undefined) {
+                        this.flag = true;
+                    } else {
+                        this.flag = false;
+                        console.log(this.goods);
+                        // 
+                        bus.$emit("goods-info", '来自');
+                        button.setAttribute('data-dismiss', 'modal');
+                    }
+                }
+            },
+            computed: {
+                // 计算商品价格
+                calculPrice: {
+                    get: function () {
+                        let totalPrice = 0;
+                        switch (this.goodsName) {
+                            case '珍珠奶茶':
+                                totalPrice += this.priceList[0].price;
+                                break;
+                            case '波霸奶茶':
+                                totalPrice += this.priceList[1].price;
+                                break;
+                            case '可可芭蕾':
+                                totalPrice += this.priceList[2].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        switch (this.goods.size) {
+                            case '大杯':
+                                totalPrice += this.priceList[3].price;
+                                break;
+                            case '超大杯':
+                                totalPrice += this.priceList[4].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        for (let i = 0; i < this.goods.other.length; i++) {
+                            switch (this.goods.other[i]) {
+                                case '燕姿':
+                                    totalPrice += this.priceList[5].price;
+                                    break;
+                                case '咖啡冻':
+                                    totalPrice += this.priceList[6].price;
+                                    break;
+                                case '奶霜':
+                                    totalPrice += this.priceList[7].price;
+                                    break;
+                                case '珍珠':
+                                    totalPrice += this.priceList[8].price;
+                                    break;
+                                case '椰果':
+                                    totalPrice += this.priceList[9].price;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        this.goods.totalPrice1 = totalPrice;
+                        return totalPrice;
+                    }
+                }
+            },
+        });
+
+        // 分类3----拿铁
+        const navbarlist3 = Vue.component('navbarlist3', {
+            data: function () {
+                return {
+                    flag: false,
+                    goodsName: undefined,
+                    n: undefined,
+                    goods: {
+                        name: undefined,
+                        number: 1,
+                        size: undefined,
+                        other: new Array(),
+                        suger: undefined,
+                        temperature: undefined,
+                        totalPrice1: undefined,
+                    },
+
+                    priceList: [{
+                            name: '红茶拿铁',
+                            price: 10
+                        },
+                        {
+                            name: '红茶玛奇朵',
+                            price: 15,
+                        },
+                        {
+                            name: '波霸红',
+                            price: 12,
+                        },
+                        {
+                            name: '大杯',
+                            price: 3
+                        },
+                        {
+                            name: '超大杯',
+                            price: 5
+                        },
+                        {
+                            name: '燕姿',
+                            price: 5
+                        },
+                        {
+                            name: '咖啡冻',
+                            price: 5
+                        },
+                        {
+                            name: '奶霜',
+                            price: 5
+                        },
+                        {
+                            name: '珍珠',
+                            price: 3
+                        },
+                        {
+                            name: '椰果',
+                            price: 3
+                        }
+                    ],
+                    natie: [{
+                            name: '红茶拿铁',
+                            size: '中杯',
+                            status: '下架',
+                            price: 100,
+                            imageurl: 'image/红茶拿铁.png',
+                        },
+                        {
+                            name: '红茶玛奇朵',
+                            size: '中杯',
+                            status: '下架',
+                            price: 100,
+                            imageurl: 'image/红茶玛奇朵.png',
+                        },
+                        {
+                            name: '波霸红',
+                            size: '中杯',
+                            status: '下架',
+                            price: 100,
+                            imageurl: 'image/波霸红.png',
+                        }
+                    ]
+                }
+            },
+            template: `
+            <div class="row">
+            <div class="col-4 border-danger" v-for="(item, index) in natie" :key="index">
+            <div class="row">
+                <div class="col-6">
+                    <a href="#">
+                        <img :src=item.imageurl class="img-fluid " alt="">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <span class="badge badge-light mt-3">名称:</span><span
+                        class="badge badge-info">{{item.name}}</span><br>
+                    <span class="badge badge-light">规格:</span><span class="badge badge-info">{{item.size}}</span><br>
+                    <span class="badge badge-light">商品状态:</span><span
+                        class="badge badge-info">{{item.status}}</span><br>
+                    <span class="badge badge-light">价格:</span><span class="badge badge-info">￥{{item.price}}</span>
+
+                    <button @click=selectModal(index) type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
+                        data-target="#goodsinformation">选规格购买</button>
+
+                    <div id="goodsinformation" class="modal fade" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">(中杯){{goodsName}}</h5>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div v-if="flag" class="alert alert-danger" role="alert">
+                                        请选择糖量或者温度，好嘛！！！
+                                     </div>
+                                    <form action="post">
+                                        <!--规格--单选框-->
+                                        <h5>
+                                            <span class="badge badge-primary">规格</span>
+                                        </h5>
+                                        <div class="form-check">
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" checked name="size" id="" value="中杯">
+                                                中杯
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="大杯">
+                                                大杯
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="超大杯">
+                                                超大杯
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">加料</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="燕姿"> 燕姿
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="咖啡冻"> 咖啡冻
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="奶霜"> 奶霜
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="珍珠"> 珍珠
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="椰果"> 椰果
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">糖量</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger"  name="suger" id=""
+                                                    value="正常糖"> 正常糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="三分糖"> 三分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="五分糖"> 五分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="七分糖"> 七分糖
+                                            </label><br>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="不额外加糖"> 不额外加糖
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5>
+                                            <span class="badge badge-primary">温度</span>
+                                        </h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="去冰">
+                                                去冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="少冰">
+                                                少冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="常温">
+                                                常温
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="加热">
+                                                加热
+                                            </label>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <h5 class="text-danger"><span class="badge badge-primary">已选规格：</span>{{goodsName}}-{{goods.size}}-{{goods.other}}-{{goods.suger}}-{{goods.temperature}}</h5>
+                                    <hr>
+                                    <h4>总计:<span class="text-warning">￥{{calculPrice}}</span></h4>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button id="addtocar" @click="addToCar" type="button" class="btn btn-primary" >加到购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            `,
+            methods: {
+                // 模态框的索引对应
+                selectModal: function (n) {
+                    this.n = n;
+                    let obj = this.natie[this.n].name;
+                    this.goodsName = obj;
+                    this.goods.name = this.goodsName;
+                },
+
+                // 实现商品加到购物车
+                addToCar: function () {
+                    let button = document.querySelector("#addtocar");
+                    if (this.goods.suger === undefined || this.goods.temperature === undefined) {
+                        this.flag = true;
+                    } else {
+                        this.flag = false;
+                        console.log(this.goods);
+                        // 
+                        bus.$emit("goods-info", '来自');
+                        button.setAttribute('data-dismiss', 'modal');
+                    }
+                }
+            },
+            computed: {
+                // 计算商品价格
+                calculPrice: {
+                    get: function () {
+                        let totalPrice = 0;
+                        switch (this.goodsName) {
+                            case '红茶拿铁':
+                                totalPrice += this.priceList[0].price;
+                                break;
+                            case '红茶玛奇朵':
+                                totalPrice += this.priceList[1].price;
+                                break;
+                            case '波霸红':
+                                totalPrice += this.priceList[2].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        switch (this.goods.size) {
+                            case '大杯':
+                                totalPrice += this.priceList[3].price;
+                                break;
+                            case '超大杯':
+                                totalPrice += this.priceList[4].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        for (let i = 0; i < this.goods.other.length; i++) {
+                            switch (this.goods.other[i]) {
+                                case '燕姿':
+                                    totalPrice += this.priceList[5].price;
+                                    break;
+                                case '咖啡冻':
+                                    totalPrice += this.priceList[6].price;
+                                    break;
+                                case '奶霜':
+                                    totalPrice += this.priceList[7].price;
+                                    break;
+                                case '珍珠':
+                                    totalPrice += this.priceList[8].price;
+                                    break;
+                                case '椰果':
+                                    totalPrice += this.priceList[9].price;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        this.goods.totalPrice1 = totalPrice;
+                        return totalPrice;
+                    }
+                }
+            },
+        });
+
+        // 分类4----果汁
+        const navbarlist4 = Vue.component('navbarlist4', {
+            data: function () {
+                return {
+                    flag: false,
+                    goodsName: undefined,
+                    n: undefined,
+                    goods: {
+                        name: undefined,
+                        number: 1,
+                        size: undefined,
+                        other: new Array(),
+                        suger: undefined,
+                        temperature: undefined,
+                        totalPrice1: undefined,
+                    },
+
+                    priceList: [{
+                            name: '柠檬汁',
+                            price: 10
+                        },
+                        {
+                            name: '冰缘',
+                            price: 15,
+                        },
+                        {
+                            name: '茉莉绿茶',
+                            price: 12,
+                        },
+                        {
+                            name: '大杯',
+                            price: 3
+                        },
+                        {
+                            name: '超大杯',
+                            price: 5
+                        },
+                        {
+                            name: '燕姿',
+                            price: 5
+                        },
+                        {
+                            name: '咖啡冻',
+                            price: 5
+                        },
+                        {
+                            name: '奶霜',
+                            price: 5
+                        },
+                        {
+                            name: '珍珠',
+                            price: 3
+                        },
+                        {
+                            name: '椰果',
+                            price: 3
+                        }
+                    ],
+                    guozhi: [{
+                            name: '柠檬汁',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/柠檬汁.png',
+                        },
+                        {
+                            name: '冰缘',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/冰缘.png',
+                        },
+                        {
+                            name: '茉莉绿茶',
+                            size: '中杯',
+                            status: '热卖',
+                            price: 100,
+                            imageurl: 'image/茉莉绿茶.png',
+                        }
+                    ]
+                }
+            },
+            template: `
+            <div class="row">
+            <div class="col-4 border-danger" v-for="(item, index) in guozhi" :key="index">
+            <div class="row">
+                <div class="col-6">
+                    <a href="#">
+                        <img :src=item.imageurl class="img-fluid " alt="">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <span class="badge badge-light mt-3">名称:</span><span
+                        class="badge badge-info">{{item.name}}</span><br>
+                    <span class="badge badge-light">规格:</span><span class="badge badge-info">{{item.size}}</span><br>
+                    <span class="badge badge-light">商品状态:</span><span
+                        class="badge badge-info">{{item.status}}</span><br>
+                    <span class="badge badge-light">价格:</span><span class="badge badge-info">￥{{item.price}}</span>
+
+                    <button @click=selectModal(index) type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
+                        data-target="#goodsinformation">选规格购买</button>
+
+                    <div id="goodsinformation" class="modal fade" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">(中杯){{goodsName}}</h5>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div v-if="flag" class="alert alert-danger" role="alert">
+                                        请选择糖量或者温度，好嘛！！！
+                                     </div>
+                                    <form action="post">
+                                        <!--规格--单选框-->
+                                        <h5>
+                                            <span class="badge badge-primary">规格</span>
+                                        </h5>
+                                        <div class="form-check">
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" checked name="size" id="" value="中杯">
+                                                中杯
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="大杯">
+                                                大杯
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" v-model="goods.size" name="size" id="" value="超大杯">
+                                                超大杯
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">加料</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="燕姿"> 燕姿
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="咖啡冻"> 咖啡冻
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="奶霜"> 奶霜
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="珍珠"> 珍珠
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="checkbox" v-model="goods.other" name="" id=""
+                                                    value="椰果"> 椰果
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5><span class="badge badge-primary">糖量</span></h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger"  name="suger" id=""
+                                                    value="正常糖"> 正常糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="三分糖"> 三分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="五分糖"> 五分糖
+                                            </label>
+                                            <label class="form-check-label mr-3">
+                                                <input class="form-check-input " type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="七分糖"> 七分糖
+                                            </label><br>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.suger" name="suger" id=""
+                                                    value="不额外加糖"> 不额外加糖
+                                            </label>
+                                        </div>
+                                        <hr>
+                                        <h5>
+                                            <span class="badge badge-primary">温度</span>
+                                        </h5>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="去冰">
+                                                去冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="少冰">
+                                                少冰
+                                            </label>
+                                            <label class="form-check-label mr-4">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="常温">
+                                                常温
+                                            </label>
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" v-model="goods.temperature" name="temp" id="" value="加热">
+                                                加热
+                                            </label>
+                                        </div>
+                                    </form>
+                                    <hr>
+                                    <h5 class="text-danger"><span class="badge badge-primary">已选规格：</span>{{goodsName}}-{{goods.size}}-{{goods.other}}-{{goods.suger}}-{{goods.temperature}}</h5>
+                                    <hr>
+                                    <h4>总计:<span class="text-warning">￥{{calculPrice}}</span></h4>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button id="addtocar" @click="addToCar" type="button" class="btn btn-primary" >加到购物车</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            `,
+            methods: {
+                // 模态框的索引对应
+                selectModal: function (n) {
+                    this.n = n;
+                    let obj = this.guozhi[this.n].name;
+                    this.goodsName = obj;
+                    this.goods.name = this.goodsName;
+                },
+
+                // 实现商品加到购物车
+                addToCar: function () {
+                    let button = document.querySelector("#addtocar");
+                    if (this.goods.suger === undefined || this.goods.temperature === undefined) {
+                        this.flag = true;
+                    } else {
+                        this.flag = false;
+                        console.log(this.goods);
+                        // 
+                        bus.$emit("goods-info", '来自');
+                        button.setAttribute('data-dismiss', 'modal');
+                    }
+                }
+            },
+            computed: {
+                // 计算商品价格
+                calculPrice: {
+                    get: function () {
+                        let totalPrice = 0;
+                        switch (this.goodsName) {
+                            case '柠檬汁':
+                                totalPrice += this.priceList[0].price;
+                                break;
+                            case '冰缘':
+                                totalPrice += this.priceList[1].price;
+                                break;
+                            case '茉莉绿茶':
+                                totalPrice += this.priceList[2].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        switch (this.goods.size) {
+                            case '大杯':
+                                totalPrice += this.priceList[3].price;
+                                break;
+                            case '超大杯':
+                                totalPrice += this.priceList[4].price;
+                                break;
+                            default:
+                                break;
+                        }
+                        for (let i = 0; i < this.goods.other.length; i++) {
+                            switch (this.goods.other[i]) {
+                                case '燕姿':
+                                    totalPrice += this.priceList[5].price;
+                                    break;
+                                case '咖啡冻':
+                                    totalPrice += this.priceList[6].price;
+                                    break;
+                                case '奶霜':
+                                    totalPrice += this.priceList[7].price;
+                                    break;
+                                case '珍珠':
+                                    totalPrice += this.priceList[8].price;
+                                    break;
+                                case '椰果':
+                                    totalPrice += this.priceList[9].price;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        this.goods.totalPrice1 = totalPrice;
+                        return totalPrice;
+                    }
+                }
+            },
+        });
+
+        // 定义路由数组, 每个路由映射一个组件
+        const routes = [{
+                path: '/shoppingcar',
+                component: car,
+            },
+            {
+                path: '/chuncha',
+                component: navbarlist1,
+            },
+            {
+                path: '/naicha',
+                component: navbarlist2,
+            },
+            {
+                path: '/natie',
+                component: navbarlist3,
+            },
+            {
+                path: '/guozhi',
+                component: navbarlist4,
+            }
+        ];
+
+        // 创建router实例，然后传`routes`配置
+        const router = new VueRouter({
+            routes: routes
+        });
+
+        var bus = new Vue();
+        // 创建和挂载根实例----将该实例作为中央事件总线用于兄弟组件之间是数据的传递
+        // 选商品中的模态框数据传递到购物车模态框中，两个组件为兄弟关系
+        const app = new Vue({
+            router: router,
+            data: {
+                phone: '',
+                regExp: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/,
+                flag: false,
+            },
+            methods: {
+                // 获得手机号码
+                getPhone: function () {
+                    let button = document.querySelector("#tijiao");
+                    if (!this.regExp.test(this.phone)) {
+                        this.flag = true;
+                    } else {
+                        this.flag = false;
+                        button.setAttribute('data-dismiss', 'modal');
+                        let cusPhone = this.phone;
+                        console.log(cusPhone);
+                    }
+                },
+            },
+            computed: {
+
+            }
+        }).$mount('#app');
+
+        console.log("hahaha");
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

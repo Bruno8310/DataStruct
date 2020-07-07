@@ -1,0 +1,6 @@
+<h1>hello jsp</h1>
+<ul>
+	<li><a href="/a.jsp">news</a></li>
+	<li><a href="/b.jsp">teach</a></li>
+	<li><a href="/c.jsp">others</a></li>
+</ul>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>首页</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <!---Vue-->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <!--axios 是一个JS网络操作的库-->
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+      
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-3">首页</h1>
+            <p class="lead">这是Spring Boot工程的首页</p>
+        </div>
+    </div>
+
+    <div id="app"class="container">
+      <div class="row">
+       <div class="col-lg-6 col-sm-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>手机号码</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in contactList" :key="index">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.phone}}</td>
+              </tr>
+            </tbody>
+          </table>
+       </div>
+
+       <div class="col-lg-6 col-sm-12">
+         
+      </div>
+
+      </div>
+    </div>
+
+
+
+    <script>
+      let vm = new Vue({
+        el: '#app',
+        data: {
+          contactList:[],
+        },
+        methods: {
+          
+        },
+        mounted() {
+
+          console.log("mounted start");
+          
+          // 网络操作---vue本身不支持网络操作, 下载插件Axios Snippets
+          // axios 发送基于JS的异步请求----AJAX,其核心XMLHttpRequest XHR
+          axios.get('/api/vi/contact/data')
+          .then(res => {
+            console.log('then');
+            
+            console.log(res);
+            // 成功,得到Response
+            this.contactList = res.data;
+          })
+          .catch(err => {
+            console.log('then');
+            
+            // 失败
+            console.error(err); 
+          })
+          .finally(() => {
+            // 不管请求成功失败，最后都会执行
+            console.log('fianlly'); 
+          });
+
+          // 可以进行多个请求
+          // axios.get(url)
+          // .then(res => {
+          //   console.log(res)
+          // })
+          // .catch(err => {
+          //   console.error(err); 
+          // });
+
+          console.log("mounted end");
+          
+        },
+
+      });
+    
+    
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

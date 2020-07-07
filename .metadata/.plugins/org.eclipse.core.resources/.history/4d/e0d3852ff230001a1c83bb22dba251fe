@@ -1,0 +1,9 @@
+
+#启动JSP
+#指定前缀
+spring.mvc.view.prefix=/WEB-INF/jsp/
+#指定后缀
+spring.mvc.view.suffix=.jsp
+
+
+

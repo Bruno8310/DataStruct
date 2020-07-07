@@ -1,0 +1,7 @@
+INDEX VERSION 1.131
+D:\bf\h\springtools_code\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2508678923.index
+\springbootdemo-cookie\src\main\java
+D:\bf\h\springtools_code\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1625260871.index
+\springbootdemo-session\src\main\java
+D:\bf\h\springtools_code\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1941148703.index
+\springbootdemo-cookie\src\main\java

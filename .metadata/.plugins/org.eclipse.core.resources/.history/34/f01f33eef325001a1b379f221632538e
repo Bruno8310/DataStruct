@@ -1,0 +1,19 @@
+package edu.csuft.Bruno.teaplatform.entity;
+
+/**
+ *  额外价格表
+ * 
+ * @author Bruno
+ *
+ */
+public class AdditionalPriceList {
+
+	int id;
+	
+	String additionalname;
+	
+	int additionalprice;
+	
+	
+	
+}

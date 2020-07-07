@@ -1,0 +1,9 @@
+package com.name.app;
+/**
+ * 自定义一个注解
+ * @author Bruno
+ *
+ */
+public @interface Msg {
+
+}

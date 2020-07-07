@@ -1,0 +1,42 @@
+package edu.csuft.Bruno;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+/**
+ * 购物车控制器
+ * @author Bruno
+ *
+ */
+@Controller
+@RequestMapping("/cart")
+public class CartController {
+
+	/**
+	 * GET /cart
+	 * 
+	 * 
+	 * @return 视图名(修改了前缀和后缀 ---取jsp路径查找---返回jsp页面)
+	 */
+	@GetMapping
+	public String home() {
+		
+		return "cart";
+	}
+	
+	/**
+	 * POST访问cart
+	 * @param pid
+	 * @return
+	 */
+	@PostMapping
+	public String add(int pid) {
+		System.out.println(pid);
+		// 返回视图
+		// 1.去购物车
+		// 2.回到原页面
+		return "redirect:/";
+	}
+}

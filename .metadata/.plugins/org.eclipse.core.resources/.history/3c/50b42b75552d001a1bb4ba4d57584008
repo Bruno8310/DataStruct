@@ -1,0 +1,12 @@
+package hello.storage;
+
+import org.springframework.stereotype.Service;
+import org.apache.ibatis.annotations.Insert;
+
+@Service
+public interface GoodsMapper {
+
+	
+	@Insert("insert into")
+	void insertGoods(Goods goods);
+}

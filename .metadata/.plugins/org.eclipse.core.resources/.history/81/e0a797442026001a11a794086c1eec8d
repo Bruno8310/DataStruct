@@ -1,0 +1,5 @@
+package edu.csuft.Bruno.teaplatform.mapper;
+
+public interface GoodsMapper {
+
+}

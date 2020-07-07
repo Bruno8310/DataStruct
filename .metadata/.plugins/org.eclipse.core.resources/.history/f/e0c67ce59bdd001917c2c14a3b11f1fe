@@ -1,0 +1,20 @@
+package edu.csuft.Bruno.test;
+
+public class Test4 {
+
+	private static int x = 100;
+
+	public static void main(String args[]) {
+		Test4 hs1 = new Test4();
+		hs1.x++;
+		Test4 hs2 = new Test4();
+		hs2.x++;
+		hs1 = new Test4();
+		hs1.x++;
+		Test4.x--;
+		System.out.println("x=" + x);
+		
+		int i = 0;
+		
+	}
+}

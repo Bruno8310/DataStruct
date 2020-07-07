@@ -1,0 +1,10 @@
+package edu.csuft.Bruno;
+/**
+ * 商品(实体类)
+ * 
+ * @author Bruno
+ *
+ */
+public class Goods {
+
+}

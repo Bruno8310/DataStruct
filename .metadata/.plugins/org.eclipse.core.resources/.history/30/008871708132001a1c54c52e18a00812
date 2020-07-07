@@ -1,0 +1,21 @@
+package edu.csuft.Bruno;
+/**
+ * 
+ * 购物车
+ * 
+ * @author Bruno
+ *
+ */
+
+import java.util.HashMap;
+
+public class ShoppingCart {
+	// 购物车中核心数据
+	HashMap<Integer, Integer> info = new HashMap<>();
+	
+	public ShoppingCart() {}
+	
+	public void add(int pid) {
+		
+	}
+}
